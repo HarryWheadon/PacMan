@@ -70,7 +70,9 @@ void Pacman::Update(int elapsedTime)
 		if (!_paused)
 		{
 			Input(elapsedTime, keyboardState);
-
+			UpdatePacman(elapsedTime);
+			UpdateMunchie(elapsedTime);
+			CheckViewportCollision();
 		}
 	}
 	if (keyboardState->IsKeyDown(Input::Keys::SPACE) && !_SKeyDown)
@@ -122,6 +124,7 @@ void Pacman::CheckViewportCollision()
 
 void Pacman::CheckPaused(Input::KeyboardState* state, Input::Keys pauseKey)
 {
+
 	Input::KeyboardState* keyboardState = Input::Keyboard::GetState();
 	if (keyboardState->IsKeyDown(Input::Keys::P) && !_pKeyDown)
 	{
