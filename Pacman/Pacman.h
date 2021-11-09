@@ -17,9 +17,32 @@ using namespace S2D;
 // Declares the Pacman class which inherits from the Game class.
 // This allows us to overload the Game class methods to help us
 // load content, draw and update our game.
+	//Structure definition
+struct Player
+{
+	float speedMultiplier;
+	int currentFrameTime;
+	int direction;
+	int frame;
+	Rect* sourceRect;
+	Texture2D* texture;
+	Vector2* position;
+};
+struct Enemy
+{
+	int Frame;
+	int CurrentFrameTime;
+	int FrameCount;
+	Rect* Rect;
+	Texture2D* BlueTexture;
+	Texture2D* InvertedTexture;
+};
 class Pacman : public Game
 {
+
 private:
+
+	
 	//Input methods
 	void Input(int elapsedTime, Input::KeyboardState* state);
 
@@ -32,10 +55,12 @@ private:
 	void UpdateMunchie(int elapsedTime);
 
 	// Data for Menu
-
+	
 	Texture2D* _menuBackground; 
 	Rect* _menuRectangle; 
 	Vector2* _menuStringPosition;
+	Player* _pacman;
+	Enemy* _munchie;
 	bool _paused;
 	bool _pKeyDown;
 	int _pacmanDirection;
@@ -43,7 +68,7 @@ private:
 	int _pacmanCurrentFrameTime;
 	const int _cPacmanFrameTime;
 	const int _cMunchieFrameTime;
-	int _muncieFrame;
+	int _munchieFrame;
 	int _munchieCurrentFrameTime;
 
 
@@ -66,6 +91,7 @@ private:
 	//Constant data for Game Variables 
 	const float _cPacmanSpeed;
 
+	
 public:
 	/// <summary> Constructs the Pacman class. </summary>
 	Pacman(int argc, char* argv[]);
