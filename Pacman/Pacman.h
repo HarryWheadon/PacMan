@@ -7,7 +7,7 @@
 		#pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
 	#endif
 #endif
-#define MUNCHIECOUNT 10
+#define MUNCHIECOUNT 50
 // Just need to include main header file
 #include "S2D/S2D.h"
 
@@ -56,11 +56,13 @@ private:
 	//Update methods
 	void UpdatePacman(int elapsedTime);
 	void UpdateMunchie(Enemy*,int elapsedTime);
-	void UpdateBanana(int elapsedTime);
+	void UpdateBananaAndApple(int elapsedTime);
 	// Data for Menu
 	
 	Texture2D* _menuBackground; 
 	Rect* _menuRectangle; 
+	Texture2D* _Background;
+	Rect* _Rectangle;
 	Vector2* _menuStringPosition;
 	Player* _pacman;
 	Enemy* _munchies[MUNCHIECOUNT];
@@ -79,6 +81,11 @@ private:
 	int _bananaframe;
 	int _bananacurrentFrameTime;
 
+	int appleFrameCount;
+	const int  _cappleFrameTime;
+	int  _appleframe;
+	int _applecurrentFrameTime;
+
 	bool _start;
 	bool _SKeyDown;
 	// Data to represent Pacman
@@ -86,10 +93,14 @@ private:
 	Rect* _pacmanSourceRect;
 	Texture2D* _pacmanTexture;
 
-	// Data to represent Munchie
+	// Data to represent Banana & apple
 	Vector2* _bananaPosition;
 	Rect* _bananaSourceRect;
 	Texture2D* _bananaTexture;
+
+	Vector2*  _applePosition;
+	Rect*  _appleSourceRect;
+	Texture2D*  _appleTexture;
 
 	// Position for String
 	Vector2* _stringPosition;

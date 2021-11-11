@@ -2,7 +2,7 @@
 #include <sstream>
 #include <time.h>
 
-Pacman::Pacman(int argc, char* argv[]) : Game(argc, argv), _cPacmanSpeed(0.1f), _cPacmanFrameTime(250), _cMunchieFrameTime(500), _cBananaFrameTime(500)
+Pacman::Pacman(int argc, char* argv[]) : Game(argc, argv), _cPacmanSpeed(0.1f), _cPacmanFrameTime(250), _cMunchieFrameTime(500), _cBananaFrameTime(500), _cappleFrameTime(500)
 {
 	srand(time(NULL));
 	for (int i = 0; i < MUNCHIECOUNT; i++)
@@ -20,6 +20,7 @@ Pacman::Pacman(int argc, char* argv[]) : Game(argc, argv), _cPacmanSpeed(0.1f), 
 	_SKeyDown = false;
 	_munchieCurrentFrameTime = 0; 
 	_bananacurrentFrameTime = 0;
+	_applecurrentFrameTime = 0;
 	_pacman->direction = 0;
 	_pacman->frame = 0;
 	_pacman->currentFrameTime = 0;
@@ -66,28 +67,34 @@ void Pacman::LoadContent()
 		_munchies[i]->MunchieTex = new Texture2D();
 		_munchies[i]->MunchieTex->Load("Textures/MunchieCombined.tga", false);
 		_munchies[i]->position = new Vector2((rand() % Graphics::GetViewportWidth()), (rand() % Graphics::GetViewportHeight()));
-		_munchies[i]->Rect = new Rect(rand() % 1000, rand() % 800, 12, 12);
+		_munchies[i]->Rect = new Rect(rand() % Graphics::GetViewportWidth(), rand() % Graphics::GetViewportHeight(), 12, 12);
 	}
 	
-
-
 	// Load Banana
 	_bananaTexture = new Texture2D();
 	_bananaTexture->Load("Textures/Banana.tga", false);
-	_bananaPosition = new Vector2(800.0f, 350.0f);
+	_bananaPosition = new Vector2(900.0f, 300.0f);
 	_bananaSourceRect = new Rect(0.0f, 0.0f, 32, 32);
+
+	// Load Apple
+	_appleTexture = new Texture2D();
+	_appleTexture->Load("Textures/apple.tga", false);
+	_applePosition = new Vector2(100.0f, 300.0f);
+	_appleSourceRect = new Rect(0.0f, 0.0f, 32, 32);
 
 	// Set string position
 	_stringPosition = new Vector2(10.0f, 25.0f);
 	// Set Menu Paramters
 
 	_menuBackground = new Texture2D();
-
 	_menuBackground->Load("Textures/Transparency.png", false);
-
 	_menuRectangle = new Rect(0.0f, 0.0f, Graphics::GetViewportWidth(), Graphics::GetViewportHeight());
-
 	_menuStringPosition = new Vector2(Graphics::GetViewportWidth() / 2.0f, Graphics::GetViewportHeight() / 2.0f);
+
+
+	_Background = new Texture2D();
+	_Background->Load("Textures/Background.png", false);
+	_Rectangle = new Rect(0.0f, 0.0f, Graphics::GetViewportWidth(), Graphics::GetViewportHeight());
 }
 
 void Pacman::Update(int elapsedTime)
@@ -104,7 +111,7 @@ void Pacman::Update(int elapsedTime)
 		{
 			Input(elapsedTime, keyboardState);
 			UpdatePacman(elapsedTime);
-			UpdateBanana(elapsedTime);
+			UpdateBananaAndApple(elapsedTime);
 			CheckViewportCollision();
 			for (int i = 0; i < MUNCHIECOUNT; i++)
 			{
@@ -156,13 +163,23 @@ void Pacman::UpdateMunchie(Enemy*, int elapsedTime)
 		}
 	}
 }
-void Pacman::UpdateBanana(int elapsedTime)
+void Pacman::UpdateBananaAndApple(int elapsedTime)
 {
 	_bananacurrentFrameTime += elapsedTime;
 	if (_bananacurrentFrameTime > _cBananaFrameTime)
 	{
 		_bananaFrameCount++;
-		if (_bananaFrameCount > 4)
+		if (_bananaFrameCount == 4)
+			_bananaFrameCount = 0;
+
+		_bananacurrentFrameTime = 0;
+	}
+
+	_bananacurrentFrameTime += elapsedTime;
+	if (_bananacurrentFrameTime > _cBananaFrameTime)
+	{
+		_bananaFrameCount++;
+		if (_bananaFrameCount == 4)
 			_bananaFrameCount = 0;
 
 		_bananacurrentFrameTime = 0;
@@ -255,12 +272,16 @@ void Pacman::Draw(int elapsedTime)
 	std::stringstream stream;
 	stream << "Pacman X: " << _pacman->position->X << " Y: " << _pacman->position->Y;
 
+	
 	SpriteBatch::BeginDraw(); // Starts Drawing
+	SpriteBatch::Draw(_Background, _Rectangle, nullptr);
 	SpriteBatch::Draw(_pacman->texture, _pacman->position, _pacman->sourceRect); // Draws Pacman
 	SpriteBatch::Draw(_bananaTexture, _bananaPosition, _bananaSourceRect);
+	SpriteBatch::Draw(_appleTexture, _applePosition, _appleSourceRect);
 	if (_bananaFrameCount == 0)
 	{
 		_bananaSourceRect = new Rect(0.0f, 0.0f, 32, 32);
+		_appleSourceRect = new Rect(0.0f, 0.0f, 32, 32);
 		for (int i = 0; i < MUNCHIECOUNT; i++)
 		{
 			SpriteBatch::Draw(_munchies[i]->MunchieInverted, _munchies[i]->Rect, nullptr, Vector2::Zero, 1.0f, 0.0f, Color::White, SpriteEffect::NONE);
@@ -269,6 +290,7 @@ void Pacman::Draw(int elapsedTime)
 	else if (_bananaFrameCount == 1)
 	{
 		_bananaSourceRect = new Rect(32.0f, 0.0f, 32, 32);
+		_appleSourceRect = new Rect(32.0f, 0.0f, 32, 32);
 		for (int i = 0; i < MUNCHIECOUNT; i++)
 		{
 			SpriteBatch::Draw(_munchies[i]->Munchie, _munchies[i]->Rect, nullptr, Vector2::Zero, 1.0f, 0.0f, Color::White, SpriteEffect::NONE);
@@ -277,6 +299,7 @@ void Pacman::Draw(int elapsedTime)
 	else if (_bananaFrameCount == 2)
 	{
 		_bananaSourceRect = new Rect(0.0f, 32.0f, 32, 32);
+		_appleSourceRect = new Rect(0.0f, 32.0f, 32, 32);
 		for (int i = 0; i < MUNCHIECOUNT; i++)
 		{
 			SpriteBatch::Draw(_munchies[i]->MunchieInverted, _munchies[i]->Rect, nullptr, Vector2::Zero, 1.0f, 0.0f, Color::White, SpriteEffect::NONE);
@@ -289,8 +312,10 @@ void Pacman::Draw(int elapsedTime)
 			SpriteBatch::Draw(_munchies[i]->Munchie, _munchies[i]->Rect, nullptr, Vector2::Zero, 1.0f, 0.0f, Color::White, SpriteEffect::NONE);
 		}
 		_bananaSourceRect = new Rect(32.0f, 32.0f, 32, 32);
-		if (_bananaFrameCount == 3)
-			_bananaFrameCount = 0;
+		_appleSourceRect = new Rect(32.0f, 32.0f, 32, 32);
+
+		/*if (_bananaFrameCount == 3)
+			_bananaFrameCount = 0;*/
 	}
 
 	//for (int i = 0; i < MUNCHIECOUNT; i++)

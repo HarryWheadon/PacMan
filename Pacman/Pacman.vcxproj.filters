@@ -46,5 +46,11 @@
     <Image Include="Textures\Banana.tga">
       <Filter>Graphics</Filter>
     </Image>
+    <Image Include="Textures\Background.png">
+      <Filter>Graphics</Filter>
+    </Image>
+    <Image Include="Textures\apple.tga">
+      <Filter>Graphics</Filter>
+    </Image>
   </ItemGroup>
 </Project>
