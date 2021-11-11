@@ -1,7 +1,5 @@
 #include "Pacman.h"
-
 #include <sstream>
-#define MUNCHIECOUNT 50
 Pacman::Pacman(int argc, char* argv[]) : Game(argc, argv), _cPacmanSpeed(0.1f), _cPacmanFrameTime(250), _cMunchieFrameTime(500)
 {
 	_munchie = new Enemy();
@@ -65,7 +63,7 @@ void Pacman::Update(int elapsedTime)
 {
 	// Gets the current state of the keyboard
 	Input::KeyboardState* keyboardState = Input::Keyboard::GetState();
-	_pacmanCurrentFrameTime += elapsedTime;
+	_pacman->currentFrameTime += elapsedTime;
 	
 	if (!_start)
 	{
@@ -108,15 +106,15 @@ void Pacman::UpdatePacman(int elapsedTime)
 
 void Pacman::UpdateMunchie(int elapsedTime)
 {
-	_munchieCurrentFrameTime += elapsedTime;
-	if (_munchieCurrentFrameTime > _cMunchieFrameTime)
+	_munchie->CurrentFrameTime += elapsedTime;
+	if (_munchie->CurrentFrameTime > _cMunchieFrameTime)
 	{
-		_munchieFrameCount++;
+		_munchie->FrameCount++;
 
-		if (_munchieFrameCount >= 2)
-			_munchieFrameCount = 0;
+		if (_munchie->FrameCount >= 2)
+			_munchie->FrameCount = 0;
 
-		_munchieCurrentFrameTime = 0;
+		_munchie->CurrentFrameTime = 0;
 	}
 }
 
@@ -148,25 +146,25 @@ void Pacman::Input(int elapsedTime, Input::KeyboardState* state)
 		_pacman->sourceRect->Y = _pacman->sourceRect->Height * _pacman->direction;
 		if (_pacman->currentFrameTime > _cPacmanFrameTime)
 		{
-			_pacmanFrame++;
-			if (_pacmanFrame >= 2)
-				_pacmanFrame = 0;
-			_pacmanCurrentFrameTime = 0;
-			_pacmanSourceRect->X = _pacmanSourceRect->Width * _pacmanFrame;
+			_pacman->frame++;
+			if (_pacman->frame >= 2)
+				_pacman->frame = 0;
+			_pacman->currentFrameTime = 0;
+			_pacman->sourceRect->X = _pacman->sourceRect->Width * _pacman->frame;
 		}
 	}
 	// Checks if A key is pressed
 	else if (keyboardState->IsKeyDown(Input::Keys::A)) {
-		_pacmanPosition->X -= _cPacmanSpeed * elapsedTime; //Moves Pacman across X axis
-		_pacmanDirection = 2;
-		_pacmanSourceRect->Y = _pacmanSourceRect->Height * _pacmanDirection;
-		if (_pacmanCurrentFrameTime > _cPacmanFrameTime)
+		_pacman->position->X -= _cPacmanSpeed * elapsedTime; //Moves Pacman across X axis
+		_pacman->direction = 2;
+		_pacman->sourceRect->Y = _pacman->sourceRect->Height * _pacman->direction;
+		if (_pacman->currentFrameTime > _cPacmanFrameTime)
 		{
-			_pacmanFrame++;
-			if (_pacmanFrame >= 2)
-				_pacmanFrame = 0;
-			_pacmanCurrentFrameTime = 0;
-			_pacmanSourceRect->X = _pacmanSourceRect->Width * _pacmanFrame;
+			_pacman->frame++;
+			if (_pacman->frame >= 2)
+				_pacman->frame = 0;
+			_pacman->currentFrameTime = 0;
+			_pacman->sourceRect->X = _pacman->sourceRect->Width * _pacman->frame;
 		}
 	}
 	// Checks if W key is pressed
@@ -176,26 +174,26 @@ void Pacman::Input(int elapsedTime, Input::KeyboardState* state)
 		_pacman->sourceRect->Y = _pacman->sourceRect->Height * _pacman->direction;
 		if (_pacman->currentFrameTime > _cPacmanFrameTime)
 		{
-			_pacmanFrame++;
+			_pacman->frame++;
 			if (_pacman->frame >= 2)
-				_pacmanFrame = 0;
+				_pacman->frame = 0;
 			_pacman->currentFrameTime = 0;
-			_pacman->sourceRect->X = _pacman->sourceRect->Width * _pacmanFrame;
+			_pacman->sourceRect->X = _pacman->sourceRect->Width * _pacman->frame;
 		}
 	}
 	// Checks if S key is pressed
 	else if (keyboardState->IsKeyDown(Input::Keys::S))
 	{
-		_pacmanPosition->Y += _cPacmanSpeed * elapsedTime; //Moves Pacman across Y axis
-		_pacmanDirection = 1;
-		_pacmanSourceRect->Y = _pacmanSourceRect->Height * _pacmanDirection;
-		if (_pacmanCurrentFrameTime > _cPacmanFrameTime)
+		_pacman->position->Y += _cPacmanSpeed * elapsedTime; //Moves Pacman across Y axis
+		_pacman->direction = 1;
+		_pacman->sourceRect->Y = _pacman->sourceRect->Height * _pacman->direction;
+		if (_pacman->currentFrameTime > _cPacmanFrameTime)
 		{
-			_pacmanFrame++;
-			if (_pacmanFrame >= 2)
-				_pacmanFrame = 0;
-			_pacmanCurrentFrameTime = 0;
-			_pacmanSourceRect->X = _pacmanSourceRect->Width * _pacmanFrame;
+			_pacman->frame++;
+			if (_pacman->frame >= 2)
+				_pacman->frame = 0;
+			_pacman->currentFrameTime = 0;
+			_pacman->sourceRect->X = _pacman->sourceRect->Width * _pacman->frame;
 		}
 	}
 }
@@ -220,10 +218,10 @@ void Pacman::Draw(int elapsedTime)
 		// Draw Blue Munchie
 		SpriteBatch::Draw(_munchie->BlueTexture, _munchie->Rect, nullptr, Vector2::Zero, 1.0f, 0.0f, Color::White, SpriteEffect::NONE);
 
-		_munchieFrameCount++;
+		_munchie->FrameCount++;
 
-		if (_munchieFrameCount >= 60)
-			_munchieFrameCount = 0;
+		if (_munchie->FrameCount >= 60)
+			_munchie->FrameCount = 0;
 	}
 
 	// Draws String
