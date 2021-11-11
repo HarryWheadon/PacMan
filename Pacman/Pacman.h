@@ -35,6 +35,8 @@ struct Enemy
 	int CurrentFrameTime;
 	int FrameCount;
 	Rect* Rect;
+	Texture2D* MunchieInverted;
+	Texture2D* Munchie;
 	Texture2D* MunchieTex;
 	Vector2* position;
 };

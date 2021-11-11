@@ -59,16 +59,22 @@ void Pacman::LoadContent()
 	// Load Munchie
 	for (int i = 0; i < MUNCHIECOUNT; i++)
 	{
+		_munchies[i]->Munchie = new Texture2D();
+		_munchies[i]->MunchieInverted = new Texture2D();
+		_munchies[i]->MunchieInverted->Load("Textures/MunchieInverted.tga", false);
+		_munchies[i]->Munchie->Load("Textures/Munchie.tga", false);
 		_munchies[i]->MunchieTex = new Texture2D();
 		_munchies[i]->MunchieTex->Load("Textures/MunchieCombined.tga", false);
 		_munchies[i]->position = new Vector2((rand() % Graphics::GetViewportWidth()), (rand() % Graphics::GetViewportHeight()));
 		_munchies[i]->Rect = new Rect(100.0, 450.0f, 12, 12);
 	}
+	
+
 
 	// Load Banana
 	_bananaTexture = new Texture2D();
-	_bananaTexture->Load("Texture/Banana.tga", false);
-	_bananaPosition = new Vector2(350.0f, 350.0f);
+	_bananaTexture->Load("Textures/Banana.tga", false);
+	_bananaPosition = new Vector2(800.0f, 350.0f);
 	_bananaSourceRect = new Rect(0.0f, 0.0f, 32, 32);
 
 	// Set string position
@@ -156,7 +162,7 @@ void Pacman::UpdateBanana(int elapsedTime)
 	if (_bananacurrentFrameTime > _cBananaFrameTime)
 	{
 		_bananaFrameCount++;
-		if (_bananaFrameCount >= 3)
+		if (_bananaFrameCount > 4)
 			_bananaFrameCount = 0;
 
 		_bananacurrentFrameTime = 0;
@@ -254,42 +260,58 @@ void Pacman::Draw(int elapsedTime)
 	SpriteBatch::Draw(_bananaTexture, _bananaPosition, _bananaSourceRect);
 	if (_bananaFrameCount == 0)
 	{
-		_bananaSourceRect = new Rect(0.0f, 0.0f, 64, 32);
+		_bananaSourceRect = new Rect(0.0f, 0.0f, 32, 32);
+		for (int i = 0; i < MUNCHIECOUNT; i++)
+		{
+			SpriteBatch::Draw(_munchies[i]->MunchieInverted, _munchies[i]->Rect, nullptr, Vector2::Zero, 1.0f, 0.0f, Color::White, SpriteEffect::NONE);
+		}
 	}
 	else if (_bananaFrameCount == 1)
 	{
 		_bananaSourceRect = new Rect(32.0f, 0.0f, 32, 32);
+		for (int i = 0; i < MUNCHIECOUNT; i++)
+		{
+			SpriteBatch::Draw(_munchies[i]->Munchie, _munchies[i]->Rect, nullptr, Vector2::Zero, 1.0f, 0.0f, Color::White, SpriteEffect::NONE);
+		}
 	}
 	else if (_bananaFrameCount == 2)
 	{
-		_bananaSourceRect = new Rect(32.0f, 32.0f, 64, 32);
+		_bananaSourceRect = new Rect(0.0f, 32.0f, 32, 32);
+		for (int i = 0; i < MUNCHIECOUNT; i++)
+		{
+			SpriteBatch::Draw(_munchies[i]->MunchieInverted, _munchies[i]->Rect, nullptr, Vector2::Zero, 1.0f, 0.0f, Color::White, SpriteEffect::NONE);
+		}
 	}
 	else if (_bananaFrameCount == 3)
 	{
-		_bananaSourceRect = new Rect(0.0f, 32.0f, 32, 32);
-		
-			_bananaFrameCount = 0;
+		for (int i = 0; i < MUNCHIECOUNT; i++)
+		{
+			SpriteBatch::Draw(_munchies[i]->Munchie, _munchies[i]->Rect, nullptr, Vector2::Zero, 1.0f, 0.0f, Color::White, SpriteEffect::NONE);
+		}
+		_bananaSourceRect = new Rect(32.0f, 32.0f, 32, 32);
+		/*if (_bananaFrameCount == 3)
+			_bananaFrameCount = 0;*/
 	}
 
-	for (int i = 0; i < MUNCHIECOUNT; i++)
-	{
-		if (_munchies[i]->FrameCount > 10)
-		{
-			// Draws Red Munchie
-			SpriteBatch::Draw(_munchies[i]->MunchieTex, _munchies[i]->Rect, nullptr, Vector2::Zero, 1.0f, 0.0f, Color::White, SpriteEffect::NONE);
-			_munchies[i]->FrameCount++;
-		}
-		else
-		{
-			// Draw Blue Munchie
-			SpriteBatch::Draw(_munchies[i]->MunchieTex, _munchies[i]->Rect, nullptr, Vector2::Zero, 1.0f, 0.0f, Color::White, SpriteEffect::NONE);
+	//for (int i = 0; i < MUNCHIECOUNT; i++)
+	//{
+	//	if (_munchies[i]->FrameCount > 10)
+	//	{
+	//		// Draws Red Munchie
+	//		SpriteBatch::Draw(_munchies[i]->MunchieTex, _munchies[i]->Rect, nullptr, Vector2::Zero, 1.0f, 0.0f, Color::White, SpriteEffect::NONE);
+	//		_munchies[i]->FrameCount++;
+	//	}
+	//	else
+	//	{
+	//		// Draw Blue Munchie
+	//		SpriteBatch::Draw(_munchies[i]->MunchieTex, _munchies[i]->Rect, nullptr, Vector2::Zero, 1.0f, 0.0f, Color::White, SpriteEffect::NONE);
 
-			_munchies[i]->FrameCount++;
+	//		_munchies[i]->FrameCount++;
 
-			if (_munchies[i]->FrameCount >= 20)
-				_munchies[i]->FrameCount = 0;
-		}
-	}
+	//		if (_munchies[i]->FrameCount >= 20)
+	//			_munchies[i]->FrameCount = 0;
+	//	}
+	//}
 	// Draws String
 	SpriteBatch::DrawString(stream.str().c_str(), _stringPosition, Color::Green);
 
