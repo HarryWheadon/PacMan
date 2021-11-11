@@ -40,10 +40,10 @@
     <Image Include="Textures\Munchie.tga">
       <Filter>Graphics</Filter>
     </Image>
-    <Image Include="..\..\..\Downloads\CherryInverted.png">
+    <Image Include="Textures\MunchieCombined.tga">
       <Filter>Graphics</Filter>
     </Image>
-    <Image Include="..\..\..\Downloads\Cherry.png">
+    <Image Include="Textures\Banana.tga">
       <Filter>Graphics</Filter>
     </Image>
   </ItemGroup>

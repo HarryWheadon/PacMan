@@ -91,9 +91,9 @@
     <ClInclude Include="Pacman.h" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\..\..\Downloads\Cherry.png" />
-    <Image Include="..\..\..\Downloads\CherryInverted.png" />
+    <Image Include="Textures\Banana.tga" />
     <Image Include="Textures\Munchie.tga" />
+    <Image Include="Textures\MunchieCombined.tga" />
     <Image Include="Textures\MunchieInverted.tga" />
     <Image Include="Textures\Pacman.tga" />
   </ItemGroup>

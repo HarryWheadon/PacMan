@@ -30,12 +30,13 @@ struct Player
 };
 struct Enemy
 {
+	int frameTime;
 	int Frame;
 	int CurrentFrameTime;
 	int FrameCount;
 	Rect* Rect;
-	Texture2D* BlueTexture;
-	Texture2D* InvertedTexture;
+	Texture2D* MunchieTex;
+	Vector2* position;
 };
 class Pacman : public Game
 {
@@ -52,15 +53,15 @@ private:
 
 	//Update methods
 	void UpdatePacman(int elapsedTime);
-	void UpdateMunchie(int elapsedTime);
-
+	void UpdateMunchie(Enemy*,int elapsedTime);
+	void UpdateBanana(int elapsedTime);
 	// Data for Menu
 	
 	Texture2D* _menuBackground; 
 	Rect* _menuRectangle; 
 	Vector2* _menuStringPosition;
 	Player* _pacman;
-	Enemy* _munchie;
+	Enemy* _munchies[MUNCHIECOUNT];
 	bool _paused;
 	bool _pKeyDown;
 	int _pacmanDirection;
@@ -71,6 +72,10 @@ private:
 	int _munchieFrame;
 	int _munchieCurrentFrameTime;
 
+	int _bananaFrameCount;
+	const int _cBananaFrameTime;
+	int _bananaframe;
+	int _bananacurrentFrameTime;
 
 	bool _start;
 	bool _SKeyDown;
@@ -80,10 +85,9 @@ private:
 	Texture2D* _pacmanTexture;
 
 	// Data to represent Munchie
-	int _munchieFrameCount;
-	Rect* _munchieRect;
-	Texture2D* _munchieBlueTexture;
-	Texture2D* _munchieInvertedTexture;
+	Vector2* _bananaPosition;
+	Rect* _bananaSourceRect;
+	Texture2D* _bananaTexture;
 
 	// Position for String
 	Vector2* _stringPosition;
