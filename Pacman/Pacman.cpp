@@ -280,38 +280,38 @@ void Pacman::Draw(int elapsedTime)
 	SpriteBatch::Draw(_appleTexture, _applePosition, _appleSourceRect);
 	if (_bananaFrameCount == 0)
 	{
-		_bananaSourceRect = new Rect(0.0f, 0.0f, 32, 32);
+		_bananaSourceRect = new Rect(32.0f, 32.0f, 32, 32);
 		_appleSourceRect = new Rect(0.0f, 0.0f, 32, 32);
 		for (int i = 0; i < MUNCHIECOUNT; i++)
 		{
-			SpriteBatch::Draw(_munchies[i]->MunchieInverted, _munchies[i]->Rect, nullptr, Vector2::Zero, 1.0f, 0.0f, Color::White, SpriteEffect::NONE);
+			SpriteBatch::Draw(_munchies[i]->Munchie, _munchies[i]->Rect, nullptr, Vector2::Zero, 1.0f, 0.0f, Color::White, SpriteEffect::NONE);	
 		}
 	}
 	else if (_bananaFrameCount == 1)
 	{
-		_bananaSourceRect = new Rect(32.0f, 0.0f, 32, 32);
+		_bananaSourceRect = new Rect(0.0f, 32.0f, 32, 32);
 		_appleSourceRect = new Rect(32.0f, 0.0f, 32, 32);
 		for (int i = 0; i < MUNCHIECOUNT; i++)
 		{
-			SpriteBatch::Draw(_munchies[i]->Munchie, _munchies[i]->Rect, nullptr, Vector2::Zero, 1.0f, 0.0f, Color::White, SpriteEffect::NONE);
+			SpriteBatch::Draw(_munchies[i]->MunchieInverted, _munchies[i]->Rect, nullptr, Vector2::Zero, 1.0f, 0.0f, Color::White, SpriteEffect::NONE);
 		}
 	}
 	else if (_bananaFrameCount == 2)
 	{
-		_bananaSourceRect = new Rect(0.0f, 32.0f, 32, 32);
+		_bananaSourceRect = new Rect(32.0f, 0.0f, 32, 32);
 		_appleSourceRect = new Rect(0.0f, 32.0f, 32, 32);
 		for (int i = 0; i < MUNCHIECOUNT; i++)
 		{
-			SpriteBatch::Draw(_munchies[i]->MunchieInverted, _munchies[i]->Rect, nullptr, Vector2::Zero, 1.0f, 0.0f, Color::White, SpriteEffect::NONE);
+			SpriteBatch::Draw(_munchies[i]->Munchie, _munchies[i]->Rect, nullptr, Vector2::Zero, 1.0f, 0.0f, Color::White, SpriteEffect::NONE);
 		}
 	}
 	else if (_bananaFrameCount == 3)
 	{
 		for (int i = 0; i < MUNCHIECOUNT; i++)
 		{
-			SpriteBatch::Draw(_munchies[i]->Munchie, _munchies[i]->Rect, nullptr, Vector2::Zero, 1.0f, 0.0f, Color::White, SpriteEffect::NONE);
+			SpriteBatch::Draw(_munchies[i]->MunchieInverted, _munchies[i]->Rect, nullptr, Vector2::Zero, 1.0f, 0.0f, Color::White, SpriteEffect::NONE);
 		}
-		_bananaSourceRect = new Rect(32.0f, 32.0f, 32, 32);
+		_bananaSourceRect = new Rect(0.0f, 0.0f, 32, 32);
 		_appleSourceRect = new Rect(32.0f, 32.0f, 32, 32);
 
 		/*if (_bananaFrameCount == 3)
