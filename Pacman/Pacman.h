@@ -7,7 +7,7 @@
 		#pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
 	#endif
 #endif
-#define MUNCHIECOUNT 50
+#define MUNCHIECOUNT 10
 // Just need to include main header file
 #include "S2D/S2D.h"
 

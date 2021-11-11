@@ -66,7 +66,7 @@ void Pacman::LoadContent()
 		_munchies[i]->MunchieTex = new Texture2D();
 		_munchies[i]->MunchieTex->Load("Textures/MunchieCombined.tga", false);
 		_munchies[i]->position = new Vector2((rand() % Graphics::GetViewportWidth()), (rand() % Graphics::GetViewportHeight()));
-		_munchies[i]->Rect = new Rect(100.0, 450.0f, 12, 12);
+		_munchies[i]->Rect = new Rect(rand() % 1000, rand() % 800, 12, 12);
 	}
 	
 
@@ -289,8 +289,8 @@ void Pacman::Draw(int elapsedTime)
 			SpriteBatch::Draw(_munchies[i]->Munchie, _munchies[i]->Rect, nullptr, Vector2::Zero, 1.0f, 0.0f, Color::White, SpriteEffect::NONE);
 		}
 		_bananaSourceRect = new Rect(32.0f, 32.0f, 32, 32);
-		/*if (_bananaFrameCount == 3)
-			_bananaFrameCount = 0;*/
+		if (_bananaFrameCount == 3)
+			_bananaFrameCount = 0;
 	}
 
 	//for (int i = 0; i < MUNCHIECOUNT; i++)
