@@ -206,12 +206,12 @@ void Pacman::Draw(int elapsedTime)
 	SpriteBatch::BeginDraw(); // Starts Drawing
 	SpriteBatch::Draw(_pacman->texture, _pacman->position, _pacman->sourceRect); // Draws Pacman
 
-	if (_munchieFrameCount < 30)
+	if (_munchie->FrameCount > 10)
 	{
 		// Draws Red Munchie
 		SpriteBatch::Draw(_munchie->InvertedTexture, _munchie->Rect, nullptr, Vector2::Zero, 1.0f, 0.0f, Color::White, SpriteEffect::NONE);
 
-		_munchieFrameCount++;
+		_munchie->FrameCount++;
 	}
 	else
 	{
