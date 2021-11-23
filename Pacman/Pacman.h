@@ -8,6 +8,7 @@
 	#endif
 #endif
 #define MUNCHIECOUNT 50
+#define GHOSTCOUNT
 // Just need to include main header file
 #include "S2D/S2D.h"
 
@@ -18,6 +19,15 @@ using namespace S2D;
 // This allows us to overload the Game class methods to help us
 // load content, draw and update our game.
 	//Structure definition
+struct MovingEnemy
+{
+	Vector2* position;
+	Texture2D* texture;
+	Rect* sourceRect;
+	int direction;
+	float speed;
+};
+
 struct Player
 {
 	float speedMultiplier;
