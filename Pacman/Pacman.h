@@ -45,9 +45,9 @@ class Pacman : public Game
 
 private:
 
-	
+
 	//Input methods
-	void Input(int elapsedTime, Input::KeyboardState* state);
+	void Input(int elapsedTime, Input::KeyboardState* state ,Input::MouseState* mouseState);
 
 	//Check methods
 	void CheckPaused(Input::KeyboardState* state, Input::Keys pauseKey);
@@ -55,12 +55,12 @@ private:
 
 	//Update methods
 	void UpdatePacman(int elapsedTime);
-	void UpdateMunchie(Enemy*,int elapsedTime);
+	void UpdateMunchie(Enemy*, int elapsedTime);
 	void UpdateBananaAndApple(int elapsedTime);
 	// Data for Menu
-	
-	Texture2D* _menuBackground; 
-	Rect* _menuRectangle; 
+
+	Texture2D* _menuBackground;
+	Rect* _menuRectangle;
 	Texture2D* _Background;
 	Rect* _Rectangle;
 	Vector2* _menuStringPosition;
@@ -98,9 +98,9 @@ private:
 	Rect* _bananaSourceRect;
 	Texture2D* _bananaTexture;
 
-	Vector2*  _applePosition;
-	Rect*  _appleSourceRect;
-	Texture2D*  _appleTexture;
+	Vector2* _applePosition;
+	Rect* _appleSourceRect;
+	Texture2D* _appleTexture;
 
 	// Position for String
 	Vector2* _stringPosition;
@@ -108,7 +108,7 @@ private:
 	//Constant data for Game Variables 
 	const float _cPacmanSpeed;
 
-	
+
 public:
 	/// <summary> Constructs the Pacman class. </summary>
 	Pacman(int argc, char* argv[]);

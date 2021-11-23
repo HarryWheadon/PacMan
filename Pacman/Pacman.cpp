@@ -97,9 +97,10 @@ void Pacman::LoadContent()
 	_Rectangle = new Rect(0.0f, 0.0f, Graphics::GetViewportWidth(), Graphics::GetViewportHeight());
 }
 
+
 void Pacman::Update(int elapsedTime)
 {
-	
+	Input::MouseState* mouseState = Input::Mouse::GetState();
 	// Gets the current state of the keyboard
 	Input::KeyboardState* keyboardState = Input::Keyboard::GetState();
 	_pacman->currentFrameTime += elapsedTime;
@@ -109,7 +110,7 @@ void Pacman::Update(int elapsedTime)
 		CheckPaused(keyboardState, Input::Keys::P);
 		if (!_paused)
 		{
-			Input(elapsedTime, keyboardState);
+			Input(elapsedTime, keyboardState, mouseState);
 			UpdatePacman(elapsedTime);
 			UpdateBananaAndApple(elapsedTime);
 			CheckViewportCollision();
@@ -205,8 +206,10 @@ void Pacman::CheckPaused(Input::KeyboardState* state, Input::Keys pauseKey)
 		_pKeyDown = false;
 }
 
-void Pacman::Input(int elapsedTime, Input::KeyboardState* state)
+
+void Pacman::Input(int elapsedTime, Input::KeyboardState* state, Input::MouseState* mouseState)
 {
+	mouseState->LeftButton;
 	Input::KeyboardState* keyboardState = Input::Keyboard::GetState();
 	// Checks if D key is pressed
 	if (keyboardState->IsKeyDown(Input::Keys::D)) {
