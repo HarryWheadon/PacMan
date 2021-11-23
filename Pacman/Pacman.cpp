@@ -211,12 +211,24 @@ void Pacman::Input(int elapsedTime, Input::KeyboardState* state, Input::MouseSta
 {
 	Input::KeyboardState* keyboardState = Input::Keyboard::GetState();
 	mouseState->LeftButton;
+	mouseState->RightButton;
 	enum class S2D_API ButtonState
 	{
 		RELEASED = 0,
 		PRESSED
 	};
 	float pacmanSpeed = _cPacmanSpeed * elapsedTime * _pacman->speedMultiplier;
+	if (mouseState->LeftButton == Input::ButtonState::PRESSED)
+	{
+		_bananaPosition->X = mouseState->X;
+		_bananaPosition->Y = mouseState->Y;
+	}
+	if (mouseState->RightButton == Input::ButtonState::PRESSED)
+	{
+		_applePosition->X = mouseState->X;
+		_applePosition->Y = mouseState->Y;
+	}
+
 
 	if (keyboardState->IsKeyDown(Input::Keys::LEFTSHIFT))
 	{
