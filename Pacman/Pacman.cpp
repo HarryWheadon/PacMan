@@ -113,10 +113,17 @@ void Pacman::Update(int elapsedTime)
 			Input(elapsedTime, keyboardState, mouseState);
 			UpdatePacman(elapsedTime);
 			UpdateBananaAndApple(elapsedTime);
-			CheckViewportCollision();
 			for (int i = 0; i < MUNCHIECOUNT; i++)
 			{
 				UpdateMunchie(_munchies[i], elapsedTime);
+
+				if (CheckViewportCollision(_pacman->position->X, _pacman->position->Y, _pacman->sourceRect->Width, _pacman->sourceRect->Height, _munchies[i]->position->X, _munchies[i]->position->Y, _munchies[i]->Rect->Width, _munchies[i]->Rect->Height))
+				{
+					delete _munchies[i]->MunchieTex;
+					delete _munchies[i]->MunchieInverted;
+					delete _munchies[i]->Rect;
+				}
+					
 			}
 		}
 	}
@@ -187,9 +194,27 @@ void Pacman::UpdateBananaAndApple(int elapsedTime)
 	}
 }
 
-void Pacman::CheckViewportCollision()
+bool Pacman::CheckViewportCollision(int x1, int y1, int width1, int height1, int x2, int y2, int width2, int height2)
 {
+	int left1 = x1;
+	int left2 = x2;
+	int right1 = x1 + width1;
+	int right2 = x2 + width2;
+	int top1 = y1;
+	int top2 = y2;
+	int bottom1 = y1 + height1;
+	int bottom2 = y2 + height2;
 
+	if (bottom1 < top2)
+		return false;
+	if (top1 > bottom2)
+		return false;
+	if (right1 < left2)
+		return false;
+	if (left1 > right2)
+		return false;
+	else
+	return true;
 }
 
 

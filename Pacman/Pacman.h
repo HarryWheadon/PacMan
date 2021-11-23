@@ -62,7 +62,6 @@ private:
 
 	//Check methods
 	void CheckPaused(Input::KeyboardState* state, Input::Keys pauseKey);
-	void CheckViewportCollision();
 
 	//Update methods
 	void UpdatePacman(int elapsedTime);
@@ -125,6 +124,8 @@ private:
 
 
 public:
+
+	bool CheckViewportCollision(int x1, int y1, int width1, int height1, int x2, int y2, int width2, int height2);
 	/// <summary> Constructs the Pacman class. </summary>
 	Pacman(int argc, char* argv[]);
 
