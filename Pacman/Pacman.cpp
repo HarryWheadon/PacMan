@@ -126,6 +126,7 @@ void Pacman::Update(int elapsedTime)
 			UpdatePacman(elapsedTime);
 			UpdateBananaAndApple(elapsedTime);
 			UpdateGhost(_ghosts[0], elapsedTime);
+			CheckGhostCollisions();
 			for (int i = 0; i < MUNCHIECOUNT; i++)
 			{
 				
@@ -393,6 +394,7 @@ void Pacman::Draw(int elapsedTime)
 
 	SpriteBatch::BeginDraw(); // Starts Drawing
 	SpriteBatch::Draw(_Background, _Rectangle, nullptr);
+	SpriteBatch::Draw(_ghosts[0]->texture, _ghosts[0]->position, _ghosts[0]->sourceRect);
 	if (!_pacman->dead)
 	{
 		SpriteBatch::Draw(_pacman->texture, _pacman->position, _pacman->sourceRect); // Draws Pacman
