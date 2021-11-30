@@ -125,16 +125,15 @@ void Pacman::Update(int elapsedTime)
 			Input(elapsedTime, keyboardState, mouseState);
 			UpdatePacman(elapsedTime);
 			UpdateBananaAndApple(elapsedTime);
+			UpdateGhost(_ghosts[0], elapsedTime);
 			for (int i = 0; i < MUNCHIECOUNT; i++)
 			{
-				UpdateMunchie(_munchies[i], elapsedTime);
-
+				
 				if (CheckViewportCollision(_pacman->position->X, _pacman->position->Y, _pacman->sourceRect->Width, _pacman->sourceRect->Height, _munchies[i]->position->X, _munchies[i]->position->Y, _munchies[i]->Rect->Width, _munchies[i]->Rect->Height))
 				{
-					delete _munchies[i];
-					MUNCHIECOUNT - 1;
+					_munchies[i]->Rect = new Rect(-100, -100, 12,12);
 				}
-					
+				UpdateMunchie(_munchies[i], elapsedTime);
 			}
 		}
 	}
@@ -144,6 +143,27 @@ void Pacman::Update(int elapsedTime)
 		_start = !_start;
 	}
 }
+
+void Pacman::UpdateGhost(MovingEnemy* ghost, int elapsedTime)
+{
+	if (ghost->direction == 0) //moves Right
+	{
+		ghost->position->X += ghost->speed * elapsedTime;
+	}
+	else if (ghost->direction == 1) //Moves Left
+	{
+		ghost->position->X -= ghost->speed * elapsedTime;
+	}
+	if (ghost->position->X + ghost->sourceRect->Width >= Graphics::GetViewportWidth()) //Hits Right edge
+	{
+		ghost->direction = 1; //Change direction
+	}
+	else if (ghost->position->X < 0) // Hits Left edge
+	{
+		ghost->direction = 0; // change direction
+	}
+}
+
 
 void Pacman::UpdatePacman(int elapsedTime)
 {
@@ -229,7 +249,35 @@ bool Pacman::CheckViewportCollision(int x1, int y1, int width1, int height1, int
 	return true;
 }
 
+void Pacman::CheckGhostCollisions()
+{
+	//Local Variables
+	int i = 0;
+	int bottom1 = _pacman->position->Y + _pacman->sourceRect->Height;
+	int bottom2 = 0;
+	int left1 = _pacman->position->X;
+	int left2 = 0;
+	int right1 = _pacman->position->X + _pacman->sourceRect->Width;
+	int right2 = 0;
+	int top1 = _pacman->position->Y;
+	int top2 = 0;
 
+	for (i = 0; i < GHOSTCOUNT; i++)
+	{
+		bottom2 =
+			_ghosts[i]->position->Y + _ghosts[i]->sourceRect->Height;
+		left2 = _ghosts[i]->position->X;
+		right2 =
+			_ghosts[i]->position->X + _ghosts[i]->sourceRect->Width;
+		top2 = _ghosts[i]->position->Y;
+
+		if ((bottom1 > top2) && (top1 < bottom2) && (right1 > left2) && (left1 < right2))
+		{
+			_pacman->dead = true;
+			i = GHOSTCOUNT;
+		}
+	}
+}
 void Pacman::CheckPaused(Input::KeyboardState* state, Input::Keys pauseKey)
 {
 
