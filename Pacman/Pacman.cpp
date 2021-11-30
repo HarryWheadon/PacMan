@@ -240,13 +240,14 @@ bool Pacman::CheckViewportCollision(int x1, int y1, int width1, int height1, int
 
 	if (bottom1 < top2)
 		return false;
-	if (top1 > bottom2)
+	else if (top1 > bottom2)
 		return false;
-	if (right1 < left2)
+	else if (right1 < left2)
 		return false;
-	if (left1 > right2)
+	else if (left1 > right2)
 		return false;
 	else
+
 	return true;
 }
 
