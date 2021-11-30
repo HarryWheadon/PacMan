@@ -16,6 +16,7 @@ Pacman::Pacman(int argc, char* argv[]) : Game(argc, argv), _cPacmanSpeed(0.1f), 
 	_munchies[i]->CurrentFrameTime = 0;
 	_munchies[i]->frameTime = rand() % 500 + 500;
 	}
+	count = 0;
 	_pacman = new Player();
 	_pacman->dead = false;
 	_paused = false;
@@ -79,7 +80,7 @@ void Pacman::LoadContent()
 		_munchies[i]->MunchieTex = new Texture2D();
 		_munchies[i]->MunchieTex->Load("Textures/MunchieCombined.tga", false);
 		_munchies[i]->position = new Vector2((rand() % Graphics::GetViewportWidth()), (rand() % Graphics::GetViewportHeight()));
-		_munchies[i]->Rect = new Rect(rand() % Graphics::GetViewportWidth(), rand() % Graphics::GetViewportHeight(), 12, 12);
+		_munchies[i]->Rect = new Rect(_munchies[i]->position->X,_munchies[i]->position->Y, 12, 12);
 	}
 	
 	// Load Banana
@@ -133,6 +134,7 @@ void Pacman::Update(int elapsedTime)
 				if (CheckViewportCollision(_pacman->position->X, _pacman->position->Y, _pacman->sourceRect->Width, _pacman->sourceRect->Height, _munchies[i]->position->X, _munchies[i]->position->Y, _munchies[i]->Rect->Width, _munchies[i]->Rect->Height))
 				{
 					_munchies[i]->Rect = new Rect(-100, -100, 12,12);
+					count += 1;
 				}
 				UpdateMunchie(_munchies[i], elapsedTime);
 			}
@@ -390,8 +392,9 @@ void Pacman::Draw(int elapsedTime)
 {
 	// Allows us to easily create a string
 	std::stringstream stream;
-	stream << "Pacman X: " << _pacman->position->X << " Y: " << _pacman->position->Y;
-
+	std::stringstream Count;
+	stream << "Pacman X: " << _pacman->position->X << " Y: " << _pacman->position->Y << "    " ;
+	Count << "POINTS: " << count;
 
 	SpriteBatch::BeginDraw(); // Starts Drawing
 	SpriteBatch::Draw(_Background, _Rectangle, nullptr);
@@ -463,7 +466,7 @@ void Pacman::Draw(int elapsedTime)
 	//}
 	// Draws String
 	SpriteBatch::DrawString(stream.str().c_str(), _stringPosition, Color::Green);
-
+	SpriteBatch::DrawString(Count.str().c_str(), new Vector2(250.0f, 25.0f), Color::Red);
 	if (_paused)
 	{
 		std::stringstream menuStream; menuStream << "PAUSED!";
