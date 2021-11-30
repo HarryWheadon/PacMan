@@ -5,6 +5,10 @@
 Pacman::Pacman(int argc, char* argv[]) : Game(argc, argv), _cPacmanSpeed(0.1f), _cPacmanFrameTime(250), _cMunchieFrameTime(500), _cBananaFrameTime(500), _cappleFrameTime(500)
 {
 	srand(time(NULL));
+	_ghosts[0] = new MovingEnemy();
+	_ghosts[0]->direction = 0;
+	_ghosts[0]->speed = 0.2f;
+
 	for (int i = 0; i < MUNCHIECOUNT; i++)
 	{ 
 	_munchies[i] = new Enemy();
@@ -13,6 +17,7 @@ Pacman::Pacman(int argc, char* argv[]) : Game(argc, argv), _cPacmanSpeed(0.1f), 
 	_munchies[i]->frameTime = rand() % 500 + 500;
 	}
 	_pacman = new Player();
+	_pacman->dead = false;
 	_paused = false;
 	_pKeyDown = false;
 	_start = true;
@@ -56,6 +61,13 @@ void Pacman::LoadContent()
 	_pacman->texture->Load("Textures/Pacman.tga", false);
 	_pacman->position = new Vector2(350.0f, 350.0f);
 	_pacman->sourceRect = new Rect(0.0f, 0.0f, 32, 32);
+
+	// Load Ghost
+	_ghosts[0]->texture = new Texture2D();
+	_ghosts[0]->texture->Load("Textures/GhostBlue.png", false);
+	_ghosts[0]->position = new Vector2((rand() % Graphics::GetViewportWidth()),
+		(rand() % Graphics::GetViewportHeight()));
+	_ghosts[0]->sourceRect = new Rect(0.0f, 0.0f, 20, 20);
 
 	// Load Munchie
 	for (int i = 0; i < MUNCHIECOUNT; i++)
@@ -119,7 +131,8 @@ void Pacman::Update(int elapsedTime)
 
 				if (CheckViewportCollision(_pacman->position->X, _pacman->position->Y, _pacman->sourceRect->Width, _pacman->sourceRect->Height, _munchies[i]->position->X, _munchies[i]->position->Y, _munchies[i]->Rect->Width, _munchies[i]->Rect->Height))
 				{
-					
+					delete _munchies[i];
+					MUNCHIECOUNT - 1;
 				}
 					
 			}
@@ -329,10 +342,13 @@ void Pacman::Draw(int elapsedTime)
 	std::stringstream stream;
 	stream << "Pacman X: " << _pacman->position->X << " Y: " << _pacman->position->Y;
 
-	
+
 	SpriteBatch::BeginDraw(); // Starts Drawing
 	SpriteBatch::Draw(_Background, _Rectangle, nullptr);
-	SpriteBatch::Draw(_pacman->texture, _pacman->position, _pacman->sourceRect); // Draws Pacman
+	if (!_pacman->dead)
+	{
+		SpriteBatch::Draw(_pacman->texture, _pacman->position, _pacman->sourceRect); // Draws Pacman
+	}
 	SpriteBatch::Draw(_bananaTexture, _bananaPosition, _bananaSourceRect);
 	SpriteBatch::Draw(_appleTexture, _applePosition, _appleSourceRect);
 	if (_bananaFrameCount == 0)
@@ -341,7 +357,7 @@ void Pacman::Draw(int elapsedTime)
 		_appleSourceRect = new Rect(0.0f, 0.0f, 32, 32);
 		for (int i = 0; i < MUNCHIECOUNT; i++)
 		{
-			SpriteBatch::Draw(_munchies[i]->Munchie, _munchies[i]->Rect, nullptr, Vector2::Zero, 1.0f, 0.0f, Color::White, SpriteEffect::NONE);	
+			SpriteBatch::Draw(_munchies[i]->Munchie, _munchies[i]->Rect, nullptr, Vector2::Zero, 1.0f, 0.0f, Color::White, SpriteEffect::NONE);
 		}
 	}
 	else if (_bananaFrameCount == 1)
@@ -400,9 +416,9 @@ void Pacman::Draw(int elapsedTime)
 	if (_paused)
 	{
 		std::stringstream menuStream; menuStream << "PAUSED!";
-	SpriteBatch::Draw(_menuBackground, _menuRectangle, nullptr);
-	SpriteBatch::DrawString(menuStream.str().c_str(), _menuStringPosition, Color::Red);
-}
+		SpriteBatch::Draw(_menuBackground, _menuRectangle, nullptr);
+		SpriteBatch::DrawString(menuStream.str().c_str(), _menuStringPosition, Color::Red);
+	}
 	if (_start)
 	{
 		std::stringstream menuStream; menuStream << "Press Space to Start the Game";
