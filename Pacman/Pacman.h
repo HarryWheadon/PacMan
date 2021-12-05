@@ -89,6 +89,7 @@ private:
 	const int _cMunchieFrameTime;
 	int _munchieFrame;
 	int _munchieCurrentFrameTime;
+	int count;
 
 	int _bananaFrameCount;
 	const int _cBananaFrameTime;
