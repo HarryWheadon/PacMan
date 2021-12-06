@@ -52,5 +52,11 @@
     <Image Include="Textures\apple.tga">
       <Filter>Graphics</Filter>
     </Image>
+    <Image Include="Textures\Background.jpg">
+      <Filter>Graphics</Filter>
+    </Image>
+    <Image Include="Textures\GhostBlue.png">
+      <Filter>Graphics</Filter>
+    </Image>
   </ItemGroup>
 </Project>
