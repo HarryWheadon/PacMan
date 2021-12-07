@@ -65,9 +65,9 @@ void Pacman::LoadContent()
 	_pop->Load("Sound/pop.wav");
 	// Load Pacman
 	_pacman->texture = new Texture2D();
-	_pacman->texture->Load("Textures/Pacman.tga", false);
+	_pacman->texture->Load("Textures/Pacman.png", false);
 	_pacman->position = new Vector2(300.0f, 250.0f);
-	_pacman->sourceRect = new Rect(0.0f, 0.0f, 32, 32);
+	_pacman->sourceRect = new Rect(0.0f, 0.0f, 48, 48);
 
 	// Load Ghost
 	_ghosts[0]->texture = new Texture2D();
@@ -341,43 +341,18 @@ void Pacman::Input(int elapsedTime, Input::KeyboardState* state, Input::MouseSta
 		_pacman->position->X += pacmanSpeed; //Moves Pacman across X axis
 		_pacman->direction = 0;
 		_pacman->sourceRect->Y = _pacman->sourceRect->Height * _pacman->direction;
-		if (_pacman->currentFrameTime > _cPacmanFrameTime)
-		{
-
-			_pacman->frame++;
-			if (_pacman->frame >= 2)
-				_pacman->frame = 0;
-			_pacman->currentFrameTime = 0;
-			_pacman->sourceRect->X = _pacman->sourceRect->Width * _pacman->frame;
-		}
 	}
 	// Checks if A key is pressed
 	else if (keyboardState->IsKeyDown(Input::Keys::A)) {
 		_pacman->position->X -= pacmanSpeed; //Moves Pacman across X axis
 		_pacman->direction = 2;
 		_pacman->sourceRect->Y = _pacman->sourceRect->Height * _pacman->direction;
-		if (_pacman->currentFrameTime > _cPacmanFrameTime)
-		{
-			_pacman->frame++;
-			if (_pacman->frame >= 2)
-				_pacman->frame = 0;
-			_pacman->currentFrameTime = 0;
-			_pacman->sourceRect->X = _pacman->sourceRect->Width * _pacman->frame;
-		}
 	}
 	// Checks if W key is pressed
 	else	if (keyboardState->IsKeyDown(Input::Keys::W)) {
 		_pacman->position->Y -= pacmanSpeed; //Moves Pacman across Y axis
 		_pacman->direction = 3;
 		_pacman->sourceRect->Y = _pacman->sourceRect->Height * _pacman->direction;
-		if (_pacman->currentFrameTime > _cPacmanFrameTime)
-		{
-			_pacman->frame++;
-			if (_pacman->frame >= 2)
-				_pacman->frame = 0;
-			_pacman->currentFrameTime = 0;
-			_pacman->sourceRect->X = _pacman->sourceRect->Width * _pacman->frame;
-		}
 	}
 	// Checks if S key is pressed
 	else if (keyboardState->IsKeyDown(Input::Keys::S))
@@ -385,15 +360,55 @@ void Pacman::Input(int elapsedTime, Input::KeyboardState* state, Input::MouseSta
 		_pacman->position->Y += pacmanSpeed; //Moves Pacman across Y axis
 		_pacman->direction = 1;
 		_pacman->sourceRect->Y = _pacman->sourceRect->Height * _pacman->direction;
-		if (_pacman->currentFrameTime > _cPacmanFrameTime)
-		{
-			_pacman->frame++;
-			if (_pacman->frame >= 2)
-				_pacman->frame = 0;
-			_pacman->currentFrameTime = 0;
-			_pacman->sourceRect->X = _pacman->sourceRect->Width * _pacman->frame;
-		}
 	}
+	// Moves pacman across the X axis
+	if (_pacman->direction == 0)
+	{ 
+		_pacman->position->X += pacmanSpeed;
+	if (_pacman->currentFrameTime > _cPacmanFrameTime)
+	{
+
+		_pacman->frame++;
+		if (_pacman->frame >= 2)
+			_pacman->frame = 0;
+		_pacman->currentFrameTime = 0;
+		_pacman->sourceRect->X = _pacman->sourceRect->Width * _pacman->frame;
+	}
+	}
+	// Moves pacman across the Y axis
+	else if (_pacman->direction == 1)
+		_pacman->position->Y += pacmanSpeed;
+	if (_pacman->currentFrameTime > _cPacmanFrameTime)
+	{
+		_pacman->frame++;
+		if (_pacman->frame >= 2)
+			_pacman->frame = 0;
+		_pacman->currentFrameTime = 0;
+		_pacman->sourceRect->X = _pacman->sourceRect->Width * _pacman->frame;
+	}
+	// Moves pacman across the X axis
+	else if (_pacman->direction == 2)
+		_pacman->position->X -= pacmanSpeed;
+	if (_pacman->currentFrameTime > _cPacmanFrameTime)
+	{
+		_pacman->frame++;
+		if (_pacman->frame >= 2)
+			_pacman->frame = 0;
+		_pacman->currentFrameTime = 0;
+		_pacman->sourceRect->X = _pacman->sourceRect->Width * _pacman->frame;
+	}
+	// Moves pacman across the Y axis
+	else if (_pacman->direction == 3)
+		_pacman->position->Y -= pacmanSpeed;
+	if (_pacman->currentFrameTime > _cPacmanFrameTime)
+	{
+		_pacman->frame++;
+		if (_pacman->frame >= 2)
+			_pacman->frame = 0;
+		_pacman->currentFrameTime = 0;
+		_pacman->sourceRect->X = _pacman->sourceRect->Width * _pacman->frame;
+	}
+
 }
 void Pacman::Draw(int elapsedTime)
 {
