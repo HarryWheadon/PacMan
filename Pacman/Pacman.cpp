@@ -30,9 +30,11 @@ Pacman::Pacman(int argc, char* argv[]) : Game(argc, argv), _cPacmanSpeed(0.1f), 
 	_pacman->frame = 0;
 	_pacman->currentFrameTime = 0;
 	_pacman->speedMultiplier = 1.0f;
+	_pop = new SoundEffect();
 
 	//Initialise important Game aspects
-	Graphics::Initialise(argc, argv, this, 1024, 768, false, 25, 25, "Pacman", 60);
+	Audio::Initialise();
+	Graphics::Initialise(argc, argv, this, 637, 720, false, 25, 25, "Antman", 60);
 	Input::Initialise();
 
 	// Start the Game Loop - This calls Update and Draw in game loop
@@ -47,6 +49,7 @@ Pacman::~Pacman()
 	delete _pacman->texture;
 	delete _pacman->sourceRect;
 	delete _pacman->position;
+	delete _pop;
 	for (int nCount = 0; nCount < MUNCHIECOUNT; nCount++)
 	{
 		delete _munchies[nCount]->MunchieTex;
@@ -57,10 +60,13 @@ Pacman::~Pacman()
 
 void Pacman::LoadContent()
 {
+
+	// Audio
+	_pop->Load("Sound/pop.wav");
 	// Load Pacman
 	_pacman->texture = new Texture2D();
 	_pacman->texture->Load("Textures/Pacman.tga", false);
-	_pacman->position = new Vector2(350.0f, 350.0f);
+	_pacman->position = new Vector2(300.0f, 250.0f);
 	_pacman->sourceRect = new Rect(0.0f, 0.0f, 32, 32);
 
 	// Load Ghost
@@ -86,13 +92,13 @@ void Pacman::LoadContent()
 	// Load Banana
 	_bananaTexture = new Texture2D();
 	_bananaTexture->Load("Textures/Banana.tga", false);
-	_bananaPosition = new Vector2(900.0f, 300.0f);
+	_bananaPosition = new Vector2(550.0f, 400.0f);
 	_bananaSourceRect = new Rect(0.0f, 0.0f, 32, 32);
 
 	// Load Apple
 	_appleTexture = new Texture2D();
 	_appleTexture->Load("Textures/apple.tga", false);
-	_applePosition = new Vector2(100.0f, 300.0f);
+	_applePosition = new Vector2(50.0f, 400.0f);
 	_appleSourceRect = new Rect(0.0f, 0.0f, 32, 32);
 
 	// Set string position
@@ -133,8 +139,9 @@ void Pacman::Update(int elapsedTime)
 				
 				if (CheckViewportCollision(_pacman->position->X, _pacman->position->Y, _pacman->sourceRect->Width, _pacman->sourceRect->Height, _munchies[i]->position->X, _munchies[i]->position->Y, _munchies[i]->Rect->Width, _munchies[i]->Rect->Height))
 				{
-					_munchies[i]->Rect = new Rect(-100, -100, 12,12);
+					_munchies[i]->Rect = new Rect(-100, -100, 12, 12);
 					count += 1;
+					Audio::Play(_pop);
 				}
 				UpdateMunchie(_munchies[i], elapsedTime);
 			}
@@ -171,21 +178,21 @@ void Pacman::UpdateGhost(MovingEnemy* ghost, int elapsedTime)
 void Pacman::UpdatePacman(int elapsedTime)
 {
 
-	if (_pacman->position->X + _pacman->sourceRect->Width > 1024)
+	if (_pacman->position->X + _pacman->sourceRect->Width > Graphics::GetViewportWidth())
 	{
 		_pacman->position->X = -30 + _pacman->sourceRect->Width;
 	}
 	else if (_pacman->position->X + _pacman->sourceRect->Width < 25)
 	{
-		_pacman->position->X = 1024 - _pacman->sourceRect->Width;
+		_pacman->position->X = Graphics::GetViewportWidth() - _pacman->sourceRect->Width;
 	}
-	else if (_pacman->position->Y + _pacman->sourceRect->Height > 770)
+	else if (_pacman->position->Y + _pacman->sourceRect->Height > Graphics::GetViewportHeight())
 	{
 		_pacman->position->Y = -30 + _pacman->sourceRect->Height;
 	}
 	else if (_pacman->position->Y + _pacman->sourceRect->Height < 30)
 	{
-		_pacman->position->Y = 770 - _pacman->sourceRect->Height;
+		_pacman->position->Y = Graphics::GetViewportHeight() - _pacman->sourceRect->Height;
 	}
 }
 
@@ -393,7 +400,7 @@ void Pacman::Draw(int elapsedTime)
 	// Allows us to easily create a string
 	std::stringstream stream;
 	std::stringstream Count;
-	stream << "Pacman X: " << _pacman->position->X << " Y: " << _pacman->position->Y << "    " ;
+	stream << "ANTman X: " << _pacman->position->X << " Y: " << _pacman->position->Y << "    " ;
 	Count << "POINTS: " << count;
 
 	SpriteBatch::BeginDraw(); // Starts Drawing

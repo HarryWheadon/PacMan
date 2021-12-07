@@ -58,7 +58,7 @@ private:
 
 
 	//Input methods
-	void Input(int elapsedTime, Input::KeyboardState* state ,Input::MouseState* mouseState);
+	void Input(int elapsedTime, Input::KeyboardState* state, Input::MouseState* mouseState);
 
 	//Check methods
 	void CheckPaused(Input::KeyboardState* state, Input::Keys pauseKey);
@@ -91,6 +91,7 @@ private:
 	int _munchieCurrentFrameTime;
 	int count;
 
+	SoundEffect* _pop;
 	int _bananaFrameCount;
 	const int _cBananaFrameTime;
 	int _bananaframe;
