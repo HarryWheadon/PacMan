@@ -99,6 +99,7 @@
     <Image Include="Textures\Munchie.tga" />
     <Image Include="Textures\MunchieCombined.tga" />
     <Image Include="Textures\MunchieInverted.tga" />
+    <Image Include="Textures\Pacman.png" />
     <Image Include="Textures\Pacman.tga" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
