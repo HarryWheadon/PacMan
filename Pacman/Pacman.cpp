@@ -139,7 +139,9 @@ void Pacman::Update(int elapsedTime)
 				
 				if (CheckViewportCollision(_pacman->position->X, _pacman->position->Y, _pacman->sourceRect->Width, _pacman->sourceRect->Height, _munchies[i]->position->X, _munchies[i]->position->Y, _munchies[i]->Rect->Width, _munchies[i]->Rect->Height))
 				{
-					_munchies[i]->Rect = new Rect(-100, -100, 12, 12);
+					_munchies[i]->position->Y = -100;
+					_munchies[i]->position->X = -100;
+					_munchies[i]->Rect = new Rect(_munchies[i]->position->X, _munchies[i]->position->Y, 12, 12);
 					count += 1;
 					Audio::Play(_pop);
 				}
