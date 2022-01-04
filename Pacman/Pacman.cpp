@@ -491,7 +491,7 @@ void Pacman::Draw(int elapsedTime)
 	SpriteBatch::EndDraw(); // Ends Drawing
 }
 
-void Pacman::Tile(Texture2D* texture, TileCollision collision);
+void Pacman::Tile(Texture2D* texture, TileCollision collision)
 {
 
 }
@@ -499,34 +499,35 @@ void Pacman::Tile(Texture2D* texture, TileCollision collision);
 	{
 
 	}
-	tile* Pacman::LoadTile(const char tileType, int x, int y)
+	void Pacman::LoadTile(const char tileType, int x, int y)
 	{
 		switch (tileType)
 		{
 		case '0':
-			return new tile(nullptr, TileCollision::passable);
+			
 		case '1':
-			return LoadVarietyTile("BlockA", 7, TileCollision::impassable);
+			
 		default:
-			return nullptr;
+			
 		}
 	}
-	void Pacman::DrawTiles()
-	{
-		for (int y = 0; y < GetHeight(); ++y)
-		{
-			for (int x = 0; x < GetWidth(); ++x)
-			{
-				// If there is a visible tile in that position
-				Texture2D* texture = _tile->at(x).at(y)->Texture;
-				if (texture != nullptr)
-				{
-					// Draw it in screen space.
-					Vector2 position(x,y);
-					position *= *tile::Size;
-					SpriteBatch::Draw(texture, &position);
-				}
-			}
-		}
+	//void Pacman::DrawTiles()
+	//{
+	//	for (int y = 0; y < tile::Height; ++y)
+	//	{
+	//		for (int x = 0; x < tile::Width; ++x)
+	//		{
+	//			// If there is a visible tile in that position
+	//			Texture2D* texture = _tile->at(x).at(y)->Texture;
+	//			if (texture != nullptr)
+	//			{
+	//				// Draw it in screen space.
+	//				Vector2 position(x, y);
+	//				position *= *tile::Size;
+	//				SpriteBatch::Draw(texture, &position);
+	//			}
+	//		}
+	//	}
+	//}
 
 

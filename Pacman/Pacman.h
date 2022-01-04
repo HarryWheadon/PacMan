@@ -141,8 +141,7 @@ private:
 public:
 
 	void LoadTiles(int levelIndex);
-	tile* LoadTile(const char tileType, int x, int y);
-	tile* LoadTile(const char* name, TileCollision collision);
+    void LoadTile(const char tileType, int x, int y);
 	void DrawTiles();
 
 	void Tile(Texture2D* texture, TileCollision collision);
