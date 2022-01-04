@@ -8,7 +8,7 @@
 	#endif
 #endif
 #define MUNCHIECOUNT 50
-#define GHOSTCOUNT 1
+#define GHOSTCOUNT 3
 // Just need to include main header file
 #include "S2D/S2D.h"
 
@@ -19,6 +19,21 @@ using namespace S2D;
 // This allows us to overload the Game class methods to help us
 // load content, draw and update our game.
 	//Structure definition
+enum class TileCollision
+{
+	passable = 0,
+    impassable = 1,
+    platform = 2
+};
+struct tile
+{
+	Texture2D* Texture;
+	TileCollision Collision;
+    static const int Width = 32;
+    static const int Height = 32;
+	const Vector2* tile::Size = new Vector2((float)Width, (float)Height);
+	void Tile(Texture2D* texture, TileCollision collision);
+};
 struct MovingEnemy
 {
 	Vector2* position;
@@ -55,7 +70,6 @@ class Pacman : public Game
 {
 
 private:
-
 
 	//Input methods
 	void Input(int elapsedTime, Input::KeyboardState* state, Input::MouseState* mouseState);
@@ -124,8 +138,14 @@ private:
 	//Constant data for Game Variables 
 	const float _cPacmanSpeed;
 
-
 public:
+
+	void LoadTiles(int levelIndex);
+	tile* LoadTile(const char tileType, int x, int y);
+	tile* LoadTile(const char* name, TileCollision collision);
+	void DrawTiles();
+	int GetHeight();
+	int GetWidth();
 
 	bool CheckViewportCollision(int x1, int y1, int width1, int height1, int x2, int y2, int width2, int height2);
 	/// <summary> Constructs the Pacman class. </summary>

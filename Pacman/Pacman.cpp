@@ -5,10 +5,12 @@
 Pacman::Pacman(int argc, char* argv[]) : Game(argc, argv), _cPacmanSpeed(0.1f), _cPacmanFrameTime(250), _cMunchieFrameTime(500), _cBananaFrameTime(500), _cappleFrameTime(500)
 {
 	srand(time(NULL));
-	_ghosts[0] = new MovingEnemy();
-	_ghosts[0]->direction = 0;
-	_ghosts[0]->speed = 0.2f;
-
+	for (int i = 0; i < GHOSTCOUNT; i++)
+	{
+		_ghosts[i] = new MovingEnemy();
+		_ghosts[i]->direction = 0;
+		_ghosts[i]->speed = 0.2f;
+	}
 	for (int i = 0; i < MUNCHIECOUNT; i++)
 	{ 
 	_munchies[i] = new Enemy();
@@ -31,6 +33,7 @@ Pacman::Pacman(int argc, char* argv[]) : Game(argc, argv), _cPacmanSpeed(0.1f), 
 	_pacman->currentFrameTime = 0;
 	_pacman->speedMultiplier = 1.0f;
 	_pop = new SoundEffect();
+	_tile = new tile();
 
 	//Initialise important Game aspects
 	Audio::Initialise();
@@ -70,12 +73,14 @@ void Pacman::LoadContent()
 	_pacman->sourceRect = new Rect(0.0f, 0.0f, 48, 48);
 
 	// Load Ghost
-	_ghosts[0]->texture = new Texture2D();
-	_ghosts[0]->texture->Load("Textures/GhostBlue.png", false);
-	_ghosts[0]->position = new Vector2((rand() % Graphics::GetViewportWidth()),
-		(rand() % Graphics::GetViewportHeight()));
-	_ghosts[0]->sourceRect = new Rect(0.0f, 0.0f, 20, 20);
-
+	for (int i = 0; i < GHOSTCOUNT; i++)
+	{
+		_ghosts[i]->texture = new Texture2D();
+		_ghosts[i]->texture->Load("Textures/GhostBlue.png", false);
+		_ghosts[i]->position = new Vector2((rand() % Graphics::GetViewportWidth()),
+			(rand() % Graphics::GetViewportHeight()));
+		_ghosts[i]->sourceRect = new Rect(0.0f, 0.0f, 20, 20);
+	}
 	// Load Munchie
 	for (int i = 0; i < MUNCHIECOUNT; i++)
 	{
@@ -132,7 +137,9 @@ void Pacman::Update(int elapsedTime)
 			Input(elapsedTime, keyboardState, mouseState);
 			UpdatePacman(elapsedTime);
 			UpdateBananaAndApple(elapsedTime);
-			UpdateGhost(_ghosts[0], elapsedTime);
+			for (int i = 0; i < GHOSTCOUNT; i++)
+			UpdateGhost(_ghosts[i], elapsedTime);
+
 			CheckGhostCollisions();
 			for (int i = 0; i < MUNCHIECOUNT; i++)
 			{
@@ -304,7 +311,6 @@ void Pacman::CheckPaused(Input::KeyboardState* state, Input::Keys pauseKey)
 		_pKeyDown = false;
 }
 
-
 void Pacman::Input(int elapsedTime, Input::KeyboardState* state, Input::MouseState* mouseState)
 {
 	Input::KeyboardState* keyboardState = Input::Keyboard::GetState();
@@ -422,7 +428,8 @@ void Pacman::Draw(int elapsedTime)
 
 	SpriteBatch::BeginDraw(); // Starts Drawing
 	SpriteBatch::Draw(_Background, _Rectangle, nullptr);
-	SpriteBatch::Draw(_ghosts[0]->texture, _ghosts[0]->position, _ghosts[0]->sourceRect);
+	for (int i = 0; i < GHOSTCOUNT; i++)
+	SpriteBatch::Draw(_ghosts[i]->texture, _ghosts[i]->position, _ghosts[i]->sourceRect);
 	if (!_pacman->dead)
 	{
 		SpriteBatch::Draw(_pacman->texture, _pacman->position, _pacman->sourceRect); // Draws Pacman
@@ -505,3 +512,40 @@ void Pacman::Draw(int elapsedTime)
 	}
 	SpriteBatch::EndDraw(); // Ends Drawing
 }
+
+
+	void Pacman::LoadTiles(int levelIndex)
+	{
+
+	}
+	tile* Pacman::LoadTile(const char tileType, int x, int y)
+	{
+		switch (tileType)
+		{
+		case '.':
+			return new tile(nullptr, TileCollision::passable);
+		case '#':
+			return LoadVarietyTile("BlockA", 7, TileCollision::impassable);
+		default:
+			return nullptr;
+		}
+	}
+	void Pacman::DrawTiles()
+	{
+		for (int y = 0; y < GetHeight(); ++y)
+		{
+			for (int x = 0; x < GetWidth(); ++x)
+			{
+				// If there is a visible tile in that position
+				Texture2D* texture = _tiles->at(x).at(y)->Texture;
+				if (texture != nullptr)
+				{
+					// Draw it in screen space.
+					Vector2 position((float)x, (float)y);
+					position *= *Tile::Size;
+					SpriteBatch::Draw(texture, &position);
+				}
+			}
+		}
+
+
