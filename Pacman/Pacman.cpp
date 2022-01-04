@@ -471,31 +471,9 @@ void Pacman::Draw(int elapsedTime)
 		}
 		_bananaSourceRect = new Rect(0.0f, 0.0f, 32, 32);
 		_appleSourceRect = new Rect(32.0f, 32.0f, 32, 32);
-
-		/*if (_bananaFrameCount == 3)
-			_bananaFrameCount = 0;*/
 	}
 
-	//for (int i = 0; i < MUNCHIECOUNT; i++)
-	//{
-	//	if (_munchies[i]->FrameCount > 10)
-	//	{
-	//		// Draws Red Munchie
-	//		SpriteBatch::Draw(_munchies[i]->MunchieTex, _munchies[i]->Rect, nullptr, Vector2::Zero, 1.0f, 0.0f, Color::White, SpriteEffect::NONE);
-	//		_munchies[i]->FrameCount++;
-	//	}
-	//	else
-	//	{
-	//		// Draw Blue Munchie
-	//		SpriteBatch::Draw(_munchies[i]->MunchieTex, _munchies[i]->Rect, nullptr, Vector2::Zero, 1.0f, 0.0f, Color::White, SpriteEffect::NONE);
 
-	//		_munchies[i]->FrameCount++;
-
-	//		if (_munchies[i]->FrameCount >= 20)
-	//			_munchies[i]->FrameCount = 0;
-	//	}
-	//}
-	// Draws String
 	SpriteBatch::DrawString(stream.str().c_str(), _stringPosition, Color::Green);
 	SpriteBatch::DrawString(Count.str().c_str(), new Vector2(250.0f, 25.0f), Color::Red);
 	if (_paused)
@@ -513,7 +491,10 @@ void Pacman::Draw(int elapsedTime)
 	SpriteBatch::EndDraw(); // Ends Drawing
 }
 
+void Pacman::Tile(Texture2D* texture, TileCollision collision);
+{
 
+}
 	void Pacman::LoadTiles(int levelIndex)
 	{
 
@@ -522,9 +503,9 @@ void Pacman::Draw(int elapsedTime)
 	{
 		switch (tileType)
 		{
-		case '.':
+		case '0':
 			return new tile(nullptr, TileCollision::passable);
-		case '#':
+		case '1':
 			return LoadVarietyTile("BlockA", 7, TileCollision::impassable);
 		default:
 			return nullptr;
@@ -537,12 +518,12 @@ void Pacman::Draw(int elapsedTime)
 			for (int x = 0; x < GetWidth(); ++x)
 			{
 				// If there is a visible tile in that position
-				Texture2D* texture = _tiles->at(x).at(y)->Texture;
+				Texture2D* texture = _tile->at(x).at(y)->Texture;
 				if (texture != nullptr)
 				{
 					// Draw it in screen space.
-					Vector2 position((float)x, (float)y);
-					position *= *Tile::Size;
+					Vector2 position(x,y);
+					position *= *tile::Size;
 					SpriteBatch::Draw(texture, &position);
 				}
 			}

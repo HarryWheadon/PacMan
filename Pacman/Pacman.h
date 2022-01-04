@@ -31,8 +31,7 @@ struct tile
 	TileCollision Collision;
     static const int Width = 32;
     static const int Height = 32;
-	const Vector2* tile::Size = new Vector2((float)Width, (float)Height);
-	void Tile(Texture2D* texture, TileCollision collision);
+	const Vector2* tile::Size = new Vector2(Width,Height);
 };
 struct MovingEnemy
 {
@@ -92,6 +91,7 @@ private:
 	Rect* _Rectangle;
 	Vector2* _menuStringPosition;
 	Player* _pacman;
+	tile* _tile;
 	Enemy* _munchies[MUNCHIECOUNT];
 	MovingEnemy* _ghosts[GHOSTCOUNT];
 	bool _paused;
@@ -144,8 +144,8 @@ public:
 	tile* LoadTile(const char tileType, int x, int y);
 	tile* LoadTile(const char* name, TileCollision collision);
 	void DrawTiles();
-	int GetHeight();
-	int GetWidth();
+
+	void Tile(Texture2D* texture, TileCollision collision);
 
 	bool CheckViewportCollision(int x1, int y1, int width1, int height1, int x2, int y2, int width2, int height2);
 	/// <summary> Constructs the Pacman class. </summary>
