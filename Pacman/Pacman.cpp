@@ -171,6 +171,10 @@ void Pacman::Update(int elapsedTime)
 
 void Pacman::UpdateGhost(MovingEnemy* ghost, int elapsedTime)
 {
+	for (int i = 0; i < GHOSTCOUNT; i++)
+	GhostFollow(_ghosts[i], elapsedTime);
+
+
 	if (ghost->direction == 0) //moves Right
 	{
 		ghost->position->X += ghost->speed * elapsedTime;
@@ -178,6 +182,14 @@ void Pacman::UpdateGhost(MovingEnemy* ghost, int elapsedTime)
 	else if (ghost->direction == 1) //Moves Left
 	{
 		ghost->position->X -= ghost->speed * elapsedTime;
+	}
+	else if (ghost->direction == 2)
+	{
+		ghost->position->Y += ghost->speed * elapsedTime;
+	}
+	else if (ghost->direction == 3)
+	{
+		ghost->position->Y -= ghost->speed * elapsedTime;
 	}
 	if (ghost->position->X + ghost->sourceRect->Width >= Graphics::GetViewportWidth()) //Hits Right edge
 	{
@@ -187,10 +199,22 @@ void Pacman::UpdateGhost(MovingEnemy* ghost, int elapsedTime)
 	{
 		ghost->direction = 0; // change direction
 	}
+	
 }
 
 void Pacman::GhostFollow(MovingEnemy* ghost, int elapsedTime)
 {
+	if (ghost->position->Y < _pacman->position->Y)
+	ghost->direction = 2;
+
+	if (ghost->position->X < _pacman->position->X)
+	ghost->direction = 3;
+	
+	if (ghost->position->X > _pacman->position->X)
+	ghost->direction = 1;
+
+	if (ghost->position->X < _pacman->position->X)
+		ghost->direction = 0;
 
 }
 

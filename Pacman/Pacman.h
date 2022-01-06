@@ -85,6 +85,7 @@ private:
 
 	void CheckGhostCollisions();
 	void UpdateGhost(MovingEnemy*, int elapsedTime);
+	void GhostFollow(MovingEnemy*, int elapsedTime);
 
 	Texture2D* _menuBackground;
 	Rect* _menuRectangle;
