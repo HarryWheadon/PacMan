@@ -80,6 +80,7 @@ private:
 	void UpdatePacman(int elapsedTime);
 	void UpdateMunchie(Enemy*, int elapsedTime);
 	void UpdateBananaAndApple(int elapsedTime);
+	void DeadPacman(int elapsedTime);
 	// Data for Menu
 
 	void CheckGhostCollisions();
@@ -141,7 +142,7 @@ private:
 public:
 
 	void LoadTiles(int levelIndex);
-    void LoadTile(const char tileType, int x, int y);
+	void LoadTile(const char tileType, int x, int y);
 	void DrawTiles();
 
 	void Tile(Texture2D* texture, TileCollision collision);

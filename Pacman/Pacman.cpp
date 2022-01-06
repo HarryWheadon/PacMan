@@ -131,35 +131,41 @@ void Pacman::Update(int elapsedTime)
 	
 	if (!_start)
 	{
-		CheckPaused(keyboardState, Input::Keys::P);
-		if (!_paused)
+		if (!_pacman->dead)
 		{
-			Input(elapsedTime, keyboardState, mouseState);
-			UpdatePacman(elapsedTime);
-			UpdateBananaAndApple(elapsedTime);
-			for (int i = 0; i < GHOSTCOUNT; i++)
-			UpdateGhost(_ghosts[i], elapsedTime);
 
-			CheckGhostCollisions();
-			for (int i = 0; i < MUNCHIECOUNT; i++)
+			CheckPaused(keyboardState, Input::Keys::P);
+			if (!_paused)
 			{
-				
-				if (CheckViewportCollision(_pacman->position->X, _pacman->position->Y, _pacman->sourceRect->Width, _pacman->sourceRect->Height, _munchies[i]->position->X, _munchies[i]->position->Y, _munchies[i]->Rect->Width, _munchies[i]->Rect->Height))
+				Input(elapsedTime, keyboardState, mouseState);
+				UpdatePacman(elapsedTime);
+				UpdateBananaAndApple(elapsedTime);
+				for (int i = 0; i < GHOSTCOUNT; i++)
+					UpdateGhost(_ghosts[i], elapsedTime);
+
+				CheckGhostCollisions();
+				for (int i = 0; i < MUNCHIECOUNT; i++)
 				{
-					_munchies[i]->position->Y = -100;
-					_munchies[i]->position->X = -100;
-					_munchies[i]->Rect = new Rect(_munchies[i]->position->X, _munchies[i]->position->Y, 12, 12);
-					count += 1;
-					Audio::Play(_pop);
+
+					if (CheckViewportCollision(_pacman->position->X, _pacman->position->Y, _pacman->sourceRect->Width, _pacman->sourceRect->Height, _munchies[i]->position->X, _munchies[i]->position->Y, _munchies[i]->Rect->Width, _munchies[i]->Rect->Height))
+					{
+						_munchies[i]->position->Y = -100;
+						_munchies[i]->position->X = -100;
+						_munchies[i]->Rect = new Rect(_munchies[i]->position->X, _munchies[i]->position->Y, 12, 12);
+						count += 1;
+						Audio::Play(_pop);
+					}
+					UpdateMunchie(_munchies[i], elapsedTime);
 				}
-				UpdateMunchie(_munchies[i], elapsedTime);
 			}
 		}
 	}
+
 	if (keyboardState->IsKeyDown(Input::Keys::SPACE) && !_SKeyDown)
 	{
 		_SKeyDown = true;
 		_start = !_start;
+		_pacman->dead = false;
 	}
 }
 
@@ -183,10 +189,13 @@ void Pacman::UpdateGhost(MovingEnemy* ghost, int elapsedTime)
 	}
 }
 
+void Pacman::GhostFollow(MovingEnemy* ghost, int elapsedTime)
+{
+
+}
 
 void Pacman::UpdatePacman(int elapsedTime)
 {
-
 	if (_pacman->position->X + _pacman->sourceRect->Width > Graphics::GetViewportWidth())
 	{
 		_pacman->position->X = -30 + _pacman->sourceRect->Width;
@@ -488,6 +497,12 @@ void Pacman::Draw(int elapsedTime)
 		SpriteBatch::Draw(_menuBackground, _menuRectangle, nullptr);
 		SpriteBatch::DrawString(menuStream.str().c_str(), _menuStringPosition, Color::Red);
 	}
+	if (_pacman->dead)
+	{
+		std::stringstream menuStream; menuStream << "You have Died! (Press space)";
+		SpriteBatch::Draw(_menuBackground, _menuRectangle, nullptr);
+		SpriteBatch::DrawString(menuStream.str().c_str(), _menuStringPosition, Color::Red);
+	}
 	SpriteBatch::EndDraw(); // Ends Drawing
 }
 
@@ -501,15 +516,7 @@ void Pacman::Tile(Texture2D* texture, TileCollision collision)
 	}
 	void Pacman::LoadTile(const char tileType, int x, int y)
 	{
-		switch (tileType)
-		{
-		case '0':
-			
-		case '1':
-			
-		default:
-			
-		}
+
 	}
 	//void Pacman::DrawTiles()
 	//{
