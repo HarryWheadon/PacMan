@@ -106,6 +106,7 @@ private:
 	int _munchieFrame;
 	int _munchieCurrentFrameTime;
 	int count;
+	int ghostDirec;
 
 	SoundEffect* _pop;
 	int _bananaFrameCount;

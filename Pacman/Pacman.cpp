@@ -18,6 +18,7 @@ Pacman::Pacman(int argc, char* argv[]) : Game(argc, argv), _cPacmanSpeed(0.1f), 
 	_munchies[i]->CurrentFrameTime = 0;
 	_munchies[i]->frameTime = rand() % 500 + 500;
 	}
+	ghostDirec = 0;
 	count = 0;
 	_pacman = new Player();
 	_pacman->dead = false;
@@ -171,8 +172,38 @@ void Pacman::Update(int elapsedTime)
 
 void Pacman::UpdateGhost(MovingEnemy* ghost, int elapsedTime)
 {
-	for (int i = 0; i < GHOSTCOUNT; i++)
-	GhostFollow(_ghosts[i], elapsedTime);
+	if (ghost->position->Y > _pacman->position->Y)
+	{ 
+		if (ghost->position->Y + 100 < _pacman->position->Y)
+		{
+			for (int i = 0; i < GHOSTCOUNT; i++)
+				GhostFollow(_ghosts[i], elapsedTime);
+		}
+	}
+	else if (ghost->position->Y > _pacman->position->Y)
+	{
+		if (ghost->position->Y - 100 < _pacman->position->Y)
+		{
+			for (int i = 0; i < GHOSTCOUNT; i++)
+				GhostFollow(_ghosts[i], elapsedTime);
+		}
+	}
+	else if (ghost->position->X < _pacman->position->X)
+	{
+		if (ghost->position->X + 100 > _pacman->position->X)
+		{
+			for (int i = 0; i < GHOSTCOUNT; i++)
+				GhostFollow(_ghosts[i], elapsedTime);
+		}
+	}
+		else if (ghost->position->X > _pacman->position->X)
+	{ 
+			if (ghost->position->X - 100 < _pacman->position->X)
+			{
+				for (int i = 0; i < GHOSTCOUNT; i++)
+					GhostFollow(_ghosts[i], elapsedTime);
+			}
+	}
 
 
 	if (ghost->direction == 0) //moves Right
@@ -183,11 +214,11 @@ void Pacman::UpdateGhost(MovingEnemy* ghost, int elapsedTime)
 	{
 		ghost->position->X -= ghost->speed * elapsedTime;
 	}
-	else if (ghost->direction == 2)
+	else if (ghost->direction == 2) // moves up
 	{
 		ghost->position->Y += ghost->speed * elapsedTime;
 	}
-	else if (ghost->direction == 3)
+	else if (ghost->direction == 3) // moves down
 	{
 		ghost->position->Y -= ghost->speed * elapsedTime;
 	}
@@ -195,27 +226,47 @@ void Pacman::UpdateGhost(MovingEnemy* ghost, int elapsedTime)
 	{
 		ghost->direction = 1; //Change direction
 	}
-	else if (ghost->position->X < 0) // Hits Left edge
+	else if (ghost->position->X <= 0) // Hits left edge
 	{
 		ghost->direction = 0; // change direction
+	}
+	if (ghost->position->Y + ghost->sourceRect->Height > Graphics::GetViewportHeight()) //Hits top 
+	{
+		ghost->direction = 2; //Change direction
+	}
+	else if (ghost->position->Y >= 700) // Hits bottom 
+	{
+		ghost->direction = 2; // change direction
 	}
 	
 }
 
 void Pacman::GhostFollow(MovingEnemy* ghost, int elapsedTime)
 {
+	if (ghostDirec == 0)
+	{ 
 	if (ghost->position->Y < _pacman->position->Y)
 	ghost->direction = 2;
 
-	if (ghost->position->X < _pacman->position->X)
-	ghost->direction = 3;
+	else 
+		ghost->direction = 3;
+
+	if (ghost->position->Y == _pacman->position->Y)
+		ghostDirec = 1;
+	}
 	
+	
+	if (ghostDirec == 1)
+	{ 
 	if (ghost->position->X > _pacman->position->X)
 	ghost->direction = 1;
 
-	if (ghost->position->X < _pacman->position->X)
+	else 
 		ghost->direction = 0;
 
+	if (ghost->position->X == _pacman->position->X)
+		ghostDirec = 0;
+	}
 }
 
 void Pacman::UpdatePacman(int elapsedTime)
