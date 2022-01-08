@@ -20,6 +20,7 @@ Pacman::Pacman(int argc, char* argv[]) : Game(argc, argv), _cPacmanSpeed(0.1f), 
 	}
 	ghostDirec = 0;
 	count = 0;
+	count_tile = 0;
 	_pacman = new Player();
 	_pacman->dead = false;
 	_paused = false;
@@ -34,7 +35,6 @@ Pacman::Pacman(int argc, char* argv[]) : Game(argc, argv), _cPacmanSpeed(0.1f), 
 	_pacman->currentFrameTime = 0;
 	_pacman->speedMultiplier = 1.0f;
 	_pop = new SoundEffect();
-	_tile = new tile();
 
 	//Initialise important Game aspects
 	Audio::Initialise();
@@ -43,6 +43,18 @@ Pacman::Pacman(int argc, char* argv[]) : Game(argc, argv), _cPacmanSpeed(0.1f), 
 
 	// Start the Game Loop - This calls Update and Draw in game loop
 	Graphics::StartGameLoop();
+
+	int Tiles[10][5] = {
+		{1, 1, 1,1,1},
+		{1, 1, 1,1,1},
+		{1, 1, 1,1,1},
+		{1, 1, 1,1,1},
+		{1, 1, 1,1,1},
+		{1, 1, 1,1,1},
+		{1, 1, 1,1,1},
+		{1, 1, 1,1,1},
+		{1, 1, 1,1,1},
+	};
 }
 
 Pacman::~Pacman()
@@ -64,7 +76,6 @@ Pacman::~Pacman()
 
 void Pacman::LoadContent()
 {
-
 	// Audio
 	_pop->Load("Sound/pop.wav");
 	// Load Pacman
@@ -520,6 +531,13 @@ void Pacman::Draw(int elapsedTime)
 	}
 	SpriteBatch::Draw(_bananaTexture, _bananaPosition, _bananaSourceRect);
 	SpriteBatch::Draw(_appleTexture, _applePosition, _appleSourceRect);
+	for (int y = 0; y <= 10; ++y)
+	{
+		for (int x = 0; x <= 5; ++x)
+		{
+		Tile(x,y);
+		SpriteBatch::Draw(_tile->Texture, _tile->position, _tile->sourceRect);
+	}
 	if (_bananaFrameCount == 0)
 	{
 		_bananaSourceRect = new Rect(32.0f, 32.0f, 32, 32);
@@ -581,16 +599,23 @@ void Pacman::Draw(int elapsedTime)
 	SpriteBatch::EndDraw(); // Ends Drawing
 }
 
-void Pacman::Tile(Texture2D* texture, TileCollision collision)
+void Pacman::Tile(int x, int y)
 {
-
+			_tile = new tile;
+			_tile->position = new Vector2((32 * count_tile), (32 * count_tile));
+			_tile->sourceRect = new Rect(_tile->position->Y, _tile->position->X, 32, 32);
+			LoadTile(Tiles[y][x], _tile->position->X, _tile->position->Y);
+			count_tile += 1;
 }
-	void Pacman::LoadTiles(int levelIndex)
-	{
-
-	}
 	void Pacman::LoadTile(const char tileType, int x, int y)
 	{
+		switch (tileType)
+		{
+		case 1:
+			_tile->Texture->Load("Textures/Brick_Block",true);
+		case 0:
+			;
+		}
 
 	}
 	//void Pacman::DrawTiles()

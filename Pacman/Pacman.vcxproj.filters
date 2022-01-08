@@ -61,5 +61,8 @@
     <Image Include="Textures\Pacman.png">
       <Filter>Graphics</Filter>
     </Image>
+    <Image Include="Textures\Brick_Block.png">
+      <Filter>Graphics</Filter>
+    </Image>
   </ItemGroup>
 </Project>
