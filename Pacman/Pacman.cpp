@@ -35,10 +35,12 @@ Pacman::Pacman(int argc, char* argv[]) : Game(argc, argv), _cPacmanSpeed(0.1f), 
 	_pacman->currentFrameTime = 0;
 	_pacman->speedMultiplier = 1.0f;
 	_pop = new SoundEffect();
+	_Intro = new SoundEffect();
+	_Dead = new SoundEffect();
 
 	//Initialise important Game aspects
 	Audio::Initialise();
-	Graphics::Initialise(argc, argv, this, 637, 720, false, 25, 25, "Antman", 60);
+	Graphics::Initialise(argc, argv, this, 637, 720, false, 25, 25, "MarioMan", 60);
 	Input::Initialise();
 
 	// Start the Game Loop - This calls Update and Draw in game loop
@@ -66,6 +68,8 @@ Pacman::~Pacman()
 	delete _pacman->sourceRect;
 	delete _pacman->position;
 	delete _pop;
+	delete _Intro;
+	delete _Dead;
 	for (int nCount = 0; nCount < MUNCHIECOUNT; nCount++)
 	{
 		delete _munchies[nCount]->MunchieTex;
@@ -78,6 +82,8 @@ void Pacman::LoadContent()
 {
 	// Audio
 	_pop->Load("Sound/pop.wav");
+	_Intro->Load("Sound/Intro.wav");
+	_Dead->Load("Sound/Dead.wav");
 	// Load Pacman
 	_pacman->texture = new Texture2D();
 	_pacman->texture->Load("Textures/Pacman.png", false);
@@ -121,6 +127,10 @@ void Pacman::LoadContent()
 	// Set string position
 	_stringPosition = new Vector2(10.0f, 25.0f);
 	// Set Menu Paramters
+
+	_StartBackground = new Texture2D();
+	_StartBackground->Load("Textures/PacmanBackground.png", false);
+	_StartRectangle = new Rect(0.0f, 0.0f, Graphics::GetViewportWidth(), Graphics::GetViewportHeight());
 
 	_menuBackground = new Texture2D();
 	_menuBackground->Load("Textures/Transparency.png", false);
@@ -175,6 +185,7 @@ void Pacman::Update(int elapsedTime)
 
 	if (keyboardState->IsKeyDown(Input::Keys::SPACE) && !_SKeyDown)
 	{
+		Audio::Play(_Intro);
 		_SKeyDown = true;
 		_start = !_start;
 		_pacman->dead = false;
@@ -518,7 +529,7 @@ void Pacman::Draw(int elapsedTime)
 	// Allows us to easily create a string
 	std::stringstream stream;
 	std::stringstream Count;
-	stream << "ANTman X: " << _pacman->position->X << " Y: " << _pacman->position->Y << "    ";
+	stream << "MarioMan X: " << _pacman->position->X << " Y: " << _pacman->position->Y << "    ";
 	Count << "POINTS: " << count;
 
 	SpriteBatch::BeginDraw(); // Starts Drawing
@@ -531,24 +542,24 @@ void Pacman::Draw(int elapsedTime)
 	}
 	SpriteBatch::Draw(_bananaTexture, _bananaPosition, _bananaSourceRect);
 	SpriteBatch::Draw(_appleTexture, _applePosition, _appleSourceRect);
-	for (int y = 0; y <= 10; ++y)
-	{
-		for (int x = 0; x <= 5; ++x)
-		{
-			//Tile(x, y);
-			_tile = new tile;
-			_tile->position = new Vector2((32 * count_tile), (32 * count_tile));
-			_tile->sourceRect = new Rect(_tile->position->Y, _tile->position->X, 32, 32);
-			/*count_tile += 1;
-			switch (Tiles[x][y])
-			{
-			case 1:*/
-				_tile->Texture->Load("Textures/Brick_Block.png", true);
-			case 0:
-				;
-			}
-			SpriteBatch::Draw(_tile->Texture,_tile->sourceRect);
-		}
+	//for (int y = 0; y <= 10; ++y)
+	//{
+	//	for (int x = 0; x <= 5; ++x)
+	//	{
+	//		//Tile(x, y);
+	//		_tile = new tile;
+	//		_tile->position = new Vector2((32 * count_tile), (32 * count_tile));
+	//		_tile->sourceRect = new Rect(_tile->position->Y, _tile->position->X, 32, 32);
+	//		/*count_tile += 1;
+	//		switch (Tiles[x][y])
+	//		{
+	//		case 1:*/
+	//			_tile->Texture->Load("Textures/Brick_Block.png", true);
+	//		case 0:
+	//			;
+	//		}
+	//		SpriteBatch::Draw(_tile->Texture,_tile->sourceRect);
+	//	}
 		if (_bananaFrameCount == 0)
 		{
 			_bananaSourceRect = new Rect(32.0f, 32.0f, 32, 32);
@@ -597,38 +608,41 @@ void Pacman::Draw(int elapsedTime)
 		}
 		if (_start)
 		{
-			std::stringstream menuStream; menuStream << "Press Space to Start the Game";
+			SpriteBatch::Draw(_StartBackground, _StartRectangle, nullptr);
+
+			/*std::stringstream menuStream; menuStream << "Press Space to Start the Game";
 			SpriteBatch::Draw(_menuBackground, _menuRectangle, nullptr);
-			SpriteBatch::DrawString(menuStream.str().c_str(), _menuStringPosition, Color::Red);
+			SpriteBatch::DrawString(menuStream.str().c_str(), _menuStringPosition, Color::Red);*/
 		}
 		if (_pacman->dead)
 		{
+			Audio::Play(_Dead);
 			std::stringstream menuStream; menuStream << "You have Died! (Press space)";
 			SpriteBatch::Draw(_menuBackground, _menuRectangle, nullptr);
 			SpriteBatch::DrawString(menuStream.str().c_str(), _menuStringPosition, Color::Red);
 		}
 		SpriteBatch::EndDraw(); // Ends Drawing
 	}
-}
-void Pacman::Tile(int x, int y)
-{
-			_tile = new tile;
-			_tile->position = new Vector2((32 * count_tile), (32 * count_tile));
-			_tile->sourceRect = new Rect(_tile->position->Y, _tile->position->X, 32, 32);
-			LoadTile(Tiles[y][x], _tile->position->X, _tile->position->Y);
-			count_tile += 1;
-}
-	void Pacman::LoadTile(const char tileType, int x, int y)
-	{
-		switch (tileType)
-		{
-		case 1:
-			_tile->Texture->Load("Textures/Brick_Block",true);
-		case 0:
-			;
-		}
 
-	}
+//void Pacman::Tile(int x, int y)
+//{
+//			_tile = new tile;
+//			_tile->position = new Vector2((32 * count_tile), (32 * count_tile));
+//			_tile->sourceRect = new Rect(_tile->position->Y, _tile->position->X, 32, 32);
+//			LoadTile(Tiles[y][x], _tile->position->X, _tile->position->Y);
+//			count_tile += 1;
+//}
+//	void Pacman::LoadTile(const char tileType, int x, int y)
+//	{
+//		switch (tileType)
+//		{
+//		case 1:
+//			_tile->Texture->Load("Textures/Brick_Block",true);
+//		case 0:
+//			;
+//		}
+//
+//	}
 	//void Pacman::DrawTiles()
 	//{
 	//	for (int y = 0; y < tile::Height; ++y)

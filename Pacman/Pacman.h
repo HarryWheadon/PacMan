@@ -92,6 +92,8 @@ private:
 	Rect* _menuRectangle;
 	Texture2D* _Background;
 	Rect* _Rectangle;
+	Texture2D* _StartBackground;
+	Rect* _StartRectangle;
 	Vector2* _menuStringPosition;
 	Player* _pacman;
 	tile* _tile;
@@ -112,6 +114,8 @@ private:
 	int Tiles[10][5];
 
 	SoundEffect* _pop;
+	SoundEffect* _Intro;
+	SoundEffect* _Dead;
 	int _bananaFrameCount;
 	const int _cBananaFrameTime;
 	int _bananaframe;
