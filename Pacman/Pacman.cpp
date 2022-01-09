@@ -399,6 +399,7 @@ void Pacman::CheckGhostCollisions()
 
 		if ((bottom1 > top2) && (top1 < bottom2) && (right1 > left2) && (left1 < right2))
 		{
+			Audio::Play(_Dead);
 			_pacman->dead = true;
 			i = GHOSTCOUNT;
 		}
@@ -616,7 +617,6 @@ void Pacman::Draw(int elapsedTime)
 		}
 		if (_pacman->dead)
 		{
-			Audio::Play(_Dead);
 			std::stringstream menuStream; menuStream << "You have Died! (Press space)";
 			SpriteBatch::Draw(_menuBackground, _menuRectangle, nullptr);
 			SpriteBatch::DrawString(menuStream.str().c_str(), _menuStringPosition, Color::Red);
