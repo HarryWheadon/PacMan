@@ -518,13 +518,13 @@ void Pacman::Draw(int elapsedTime)
 	// Allows us to easily create a string
 	std::stringstream stream;
 	std::stringstream Count;
-	stream << "ANTman X: " << _pacman->position->X << " Y: " << _pacman->position->Y << "    " ;
+	stream << "ANTman X: " << _pacman->position->X << " Y: " << _pacman->position->Y << "    ";
 	Count << "POINTS: " << count;
 
 	SpriteBatch::BeginDraw(); // Starts Drawing
 	SpriteBatch::Draw(_Background, _Rectangle, nullptr);
 	for (int i = 0; i < GHOSTCOUNT; i++)
-	SpriteBatch::Draw(_ghosts[i]->texture, _ghosts[i]->position, _ghosts[i]->sourceRect);
+		SpriteBatch::Draw(_ghosts[i]->texture, _ghosts[i]->position, _ghosts[i]->sourceRect);
 	if (!_pacman->dead)
 	{
 		SpriteBatch::Draw(_pacman->texture, _pacman->position, _pacman->sourceRect); // Draws Pacman
@@ -535,70 +535,81 @@ void Pacman::Draw(int elapsedTime)
 	{
 		for (int x = 0; x <= 5; ++x)
 		{
-		Tile(x,y);
-		SpriteBatch::Draw(_tile->Texture, _tile->position, _tile->sourceRect);
-	}
-	if (_bananaFrameCount == 0)
-	{
-		_bananaSourceRect = new Rect(32.0f, 32.0f, 32, 32);
-		_appleSourceRect = new Rect(0.0f, 0.0f, 32, 32);
-		for (int i = 0; i < MUNCHIECOUNT; i++)
-		{
-			SpriteBatch::Draw(_munchies[i]->Munchie, _munchies[i]->Rect, nullptr, Vector2::Zero, 1.0f, 0.0f, Color::White, SpriteEffect::NONE);
+			//Tile(x, y);
+			_tile = new tile;
+			_tile->position = new Vector2((32 * count_tile), (32 * count_tile));
+			_tile->sourceRect = new Rect(_tile->position->Y, _tile->position->X, 32, 32);
+			/*count_tile += 1;
+			switch (Tiles[x][y])
+			{
+			case 1:*/
+				_tile->Texture->Load("Textures/Brick_Block.png", true);
+			case 0:
+				;
+			}
+			SpriteBatch::Draw(_tile->Texture,_tile->sourceRect);
 		}
-	}
-	else if (_bananaFrameCount == 1)
-	{
-		_bananaSourceRect = new Rect(0.0f, 32.0f, 32, 32);
-		_appleSourceRect = new Rect(32.0f, 0.0f, 32, 32);
-		for (int i = 0; i < MUNCHIECOUNT; i++)
+		if (_bananaFrameCount == 0)
 		{
-			SpriteBatch::Draw(_munchies[i]->MunchieInverted, _munchies[i]->Rect, nullptr, Vector2::Zero, 1.0f, 0.0f, Color::White, SpriteEffect::NONE);
+			_bananaSourceRect = new Rect(32.0f, 32.0f, 32, 32);
+			_appleSourceRect = new Rect(0.0f, 0.0f, 32, 32);
+			for (int i = 0; i < MUNCHIECOUNT; i++)
+			{
+				SpriteBatch::Draw(_munchies[i]->Munchie, _munchies[i]->Rect, nullptr, Vector2::Zero, 1.0f, 0.0f, Color::White, SpriteEffect::NONE);
+			}
 		}
-	}
-	else if (_bananaFrameCount == 2)
-	{
-		_bananaSourceRect = new Rect(32.0f, 0.0f, 32, 32);
-		_appleSourceRect = new Rect(0.0f, 32.0f, 32, 32);
-		for (int i = 0; i < MUNCHIECOUNT; i++)
+		else if (_bananaFrameCount == 1)
 		{
-			SpriteBatch::Draw(_munchies[i]->Munchie, _munchies[i]->Rect, nullptr, Vector2::Zero, 1.0f, 0.0f, Color::White, SpriteEffect::NONE);
+			_bananaSourceRect = new Rect(0.0f, 32.0f, 32, 32);
+			_appleSourceRect = new Rect(32.0f, 0.0f, 32, 32);
+			for (int i = 0; i < MUNCHIECOUNT; i++)
+			{
+				SpriteBatch::Draw(_munchies[i]->MunchieInverted, _munchies[i]->Rect, nullptr, Vector2::Zero, 1.0f, 0.0f, Color::White, SpriteEffect::NONE);
+			}
 		}
-	}
-	else if (_bananaFrameCount == 3)
-	{
-		for (int i = 0; i < MUNCHIECOUNT; i++)
+		else if (_bananaFrameCount == 2)
 		{
-			SpriteBatch::Draw(_munchies[i]->MunchieInverted, _munchies[i]->Rect, nullptr, Vector2::Zero, 1.0f, 0.0f, Color::White, SpriteEffect::NONE);
+			_bananaSourceRect = new Rect(32.0f, 0.0f, 32, 32);
+			_appleSourceRect = new Rect(0.0f, 32.0f, 32, 32);
+			for (int i = 0; i < MUNCHIECOUNT; i++)
+			{
+				SpriteBatch::Draw(_munchies[i]->Munchie, _munchies[i]->Rect, nullptr, Vector2::Zero, 1.0f, 0.0f, Color::White, SpriteEffect::NONE);
+			}
 		}
-		_bananaSourceRect = new Rect(0.0f, 0.0f, 32, 32);
-		_appleSourceRect = new Rect(32.0f, 32.0f, 32, 32);
-	}
+		else if (_bananaFrameCount == 3)
+		{
+			for (int i = 0; i < MUNCHIECOUNT; i++)
+			{
+				SpriteBatch::Draw(_munchies[i]->MunchieInverted, _munchies[i]->Rect, nullptr, Vector2::Zero, 1.0f, 0.0f, Color::White, SpriteEffect::NONE);
+			}
+			_bananaSourceRect = new Rect(0.0f, 0.0f, 32, 32);
+			_appleSourceRect = new Rect(32.0f, 32.0f, 32, 32);
+		}
 
 
-	SpriteBatch::DrawString(stream.str().c_str(), _stringPosition, Color::Green);
-	SpriteBatch::DrawString(Count.str().c_str(), new Vector2(250.0f, 25.0f), Color::Red);
-	if (_paused)
-	{
-		std::stringstream menuStream; menuStream << "PAUSED!";
-		SpriteBatch::Draw(_menuBackground, _menuRectangle, nullptr);
-		SpriteBatch::DrawString(menuStream.str().c_str(), _menuStringPosition, Color::Red);
+		SpriteBatch::DrawString(stream.str().c_str(), _stringPosition, Color::Green);
+		SpriteBatch::DrawString(Count.str().c_str(), new Vector2(250.0f, 25.0f), Color::Red);
+		if (_paused)
+		{
+			std::stringstream menuStream; menuStream << "PAUSED!";
+			SpriteBatch::Draw(_menuBackground, _menuRectangle, nullptr);
+			SpriteBatch::DrawString(menuStream.str().c_str(), _menuStringPosition, Color::Red);
+		}
+		if (_start)
+		{
+			std::stringstream menuStream; menuStream << "Press Space to Start the Game";
+			SpriteBatch::Draw(_menuBackground, _menuRectangle, nullptr);
+			SpriteBatch::DrawString(menuStream.str().c_str(), _menuStringPosition, Color::Red);
+		}
+		if (_pacman->dead)
+		{
+			std::stringstream menuStream; menuStream << "You have Died! (Press space)";
+			SpriteBatch::Draw(_menuBackground, _menuRectangle, nullptr);
+			SpriteBatch::DrawString(menuStream.str().c_str(), _menuStringPosition, Color::Red);
+		}
+		SpriteBatch::EndDraw(); // Ends Drawing
 	}
-	if (_start)
-	{
-		std::stringstream menuStream; menuStream << "Press Space to Start the Game";
-		SpriteBatch::Draw(_menuBackground, _menuRectangle, nullptr);
-		SpriteBatch::DrawString(menuStream.str().c_str(), _menuStringPosition, Color::Red);
-	}
-	if (_pacman->dead)
-	{
-		std::stringstream menuStream; menuStream << "You have Died! (Press space)";
-		SpriteBatch::Draw(_menuBackground, _menuRectangle, nullptr);
-		SpriteBatch::DrawString(menuStream.str().c_str(), _menuStringPosition, Color::Red);
-	}
-	SpriteBatch::EndDraw(); // Ends Drawing
 }
-
 void Pacman::Tile(int x, int y)
 {
 			_tile = new tile;
