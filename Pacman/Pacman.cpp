@@ -18,9 +18,10 @@ Pacman::Pacman(int argc, char* argv[]) : Game(argc, argv), _cPacmanSpeed(0.1f), 
 	_munchies[i]->CurrentFrameTime = 0;
 	_munchies[i]->frameTime = rand() % 500 + 500;
 	}
+	_tile = new tile;
 	ghostDirec = 0;
 	count = 0;
-	count_tile = 0;
+	countButton = 0;
 	_pacman = new Player();
 	_pacman->dead = false;
 	_paused = false;
@@ -40,22 +41,27 @@ Pacman::Pacman(int argc, char* argv[]) : Game(argc, argv), _cPacmanSpeed(0.1f), 
 
 	//Initialise important Game aspects
 	Audio::Initialise();
-	Graphics::Initialise(argc, argv, this, 637, 720, false, 25, 25, "MarioMan", 60);
+	Graphics::Initialise(argc, argv, this, 600, 700, false, 25, 25, "MarioMan", 60);
 	Input::Initialise();
 
 	// Start the Game Loop - This calls Update and Draw in game loop
 	Graphics::StartGameLoop();
 
-	int Tiles[10][5] = {
-		{1, 1, 1,1,1},
-		{1, 1, 1,1,1},
-		{1, 1, 1,1,1},
-		{1, 1, 1,1,1},
-		{1, 1, 1,1,1},
-		{1, 1, 1,1,1},
-		{1, 1, 1,1,1},
-		{1, 1, 1,1,1},
-		{1, 1, 1,1,1},
+	int Tiles[14][12] = {
+		{1, 1, 1,1,1,1, 1, 1,1,1,1, 1},
+		{1, 1, 1,1,1,1, 1, 1,1,1,1, 1},
+		{1, 1, 1,1,1,1, 1, 1,1,1,1, 1},
+		{1, 1, 1,1,1,1, 1, 1,1,1,1, 1},
+		{1, 1, 1,1,1,1, 1, 1,1,1,1, 1},
+		{1, 1, 1,1,1,1, 1, 1,1,1,1, 1},
+		{1, 1, 1,1,1,1, 1, 1,1,1,1, 1},
+		{1, 1, 1,1,1,1, 1, 1,1,1,1, 1},
+		{1, 1, 1,1,1,1, 1, 1,1,1,1, 1},
+		{1, 1, 1,1,1,1, 1, 1,1,1,1, 1},
+		{1, 1, 1,1,1,1, 1, 1,1,1,1, 1},
+		{1, 1, 1,1,1,1, 1, 1,1,1,1, 1},
+		{1, 1, 1,1,1,1, 1, 1,1,1,1, 1},
+		{1, 1, 1,1,1,1, 1, 1,1,1,1, 1},
 	};
 }
 
@@ -128,15 +134,40 @@ void Pacman::LoadContent()
 	_stringPosition = new Vector2(10.0f, 25.0f);
 	// Set Menu Paramters
 
+	_tile->Texture = new Texture2D();
+	_tile->Texture->Load("Textures/Brick_Block.png", false);
+
+	_EndBackground = new Texture2D();
+	_EndBackground->Load("Textures/GameOverBackground.png", false);
+	_EndRectangle = new Rect(0.0f, 0.0f, Graphics::GetViewportWidth(), Graphics::GetViewportHeight());
+
 	_StartBackground = new Texture2D();
 	_StartBackground->Load("Textures/PacmanBackground.png", false);
 	_StartRectangle = new Rect(0.0f, 0.0f, Graphics::GetViewportWidth(), Graphics::GetViewportHeight());
 
-	_menuBackground = new Texture2D();
-	_menuBackground->Load("Textures/Transparency.png", false);
-	_menuRectangle = new Rect(0.0f, 0.0f, Graphics::GetViewportWidth(), Graphics::GetViewportHeight());
-	_menuStringPosition = new Vector2(Graphics::GetViewportWidth() / 2.0f, Graphics::GetViewportHeight() / 2.0f);
+	_ButtonBackground = new Texture2D();
+	_ButtonBackground->Load("Textures/PlayGame.png", false);;
+	_ButtonRectangle = new Rect(0.0f, 0.0f, Graphics::GetViewportWidth(), Graphics::GetViewportHeight());
 
+	_Button1Background = new Texture2D();
+	_Button1Background->Load("Textures/Options.png", false);;
+	_Button1Rectangle = new Rect(0.0f, 0.0f, Graphics::GetViewportWidth(), Graphics::GetViewportHeight());
+
+	_Button2Background = new Texture2D();
+	_Button2Background->Load("Textures/Exit.png", false);;
+	_Button2Rectangle = new Rect(0.0f, 0.0f, Graphics::GetViewportWidth(), Graphics::GetViewportHeight());
+
+	_Button3Background = new Texture2D();
+	_Button3Background->Load("Textures/PlayAgain.png", false);;
+	_Button3Rectangle = new Rect(0.0f, 0.0f, Graphics::GetViewportWidth(), Graphics::GetViewportHeight());
+
+	_Button4Background = new Texture2D();
+	_Button4Background->Load("Textures/MainMenu.png", false);;
+	_Button4Rectangle = new Rect(0.0f, 0.0f, Graphics::GetViewportWidth(), Graphics::GetViewportHeight());
+
+	_Button5Background = new Texture2D();
+	_Button5Background->Load("Textures/Exit.png", false);;
+	_Button5Rectangle = new Rect(0.0f, 0.0f, Graphics::GetViewportWidth(), Graphics::GetViewportHeight());
 
 	_Background = new Texture2D();
 	_Background->Load("Textures/Background.png", false);
@@ -190,6 +221,98 @@ void Pacman::Update(int elapsedTime)
 		_start = !_start;
 		_pacman->dead = false;
 	}
+		if (_start)
+	{
+
+		if (countButton == 0)
+		{
+			if (keyboardState->IsKeyDown(Input::Keys::DOWN))
+			{
+				countButton += 1;
+				Sleep(200);
+			}
+			if (keyboardState->IsKeyDown(Input::Keys::RETURN))
+			{ 
+				_start = !_start;
+			Audio::Play(_Intro);
+			countButton == 0;
+			}
+		}
+		else if (countButton == 1)
+		{
+			if (keyboardState->IsKeyDown(Input::Keys::DOWN))
+			{
+				countButton += 1;
+				Sleep(200);
+			}
+			if (keyboardState->IsKeyDown(Input::Keys::UP))
+			{
+				countButton -= 1;
+				Sleep(200);
+			}
+		}
+		else if (countButton == 2)
+		{
+			if (keyboardState->IsKeyDown(Input::Keys::UP))
+			{
+				countButton -= 1;
+				Sleep(200);
+			}
+			if (keyboardState->IsKeyDown(Input::Keys::RETURN))
+			{
+				exit(0);
+			}
+		}
+	}
+		if (_pacman->dead)
+	{
+		if (countButton == 0)
+		{
+			if (keyboardState->IsKeyDown(Input::Keys::DOWN))
+			{
+				countButton += 1;
+				Sleep(200);
+			}
+			if (keyboardState->IsKeyDown(Input::Keys::RETURN))
+			{ 
+				_pacman->dead = !_pacman->dead;
+				Audio::Play(_Intro);
+			countButton == 0;
+			}
+		}
+		else if (countButton == 1)
+		{
+			if (keyboardState->IsKeyDown(Input::Keys::DOWN))
+			{
+				countButton += 1;
+				Sleep(200);
+			}
+			if (keyboardState->IsKeyDown(Input::Keys::UP))
+			{
+				countButton -= 1;
+				Sleep(200);
+			}
+			if (keyboardState->IsKeyDown(Input::Keys::RETURN))
+			{
+				_start = true;
+				_pacman->dead = !_pacman->dead;
+				countButton == 0;
+			}
+		}
+		else if (countButton == 2)
+		{
+			if (keyboardState->IsKeyDown(Input::Keys::UP))
+			{
+				countButton -= 1;
+				Sleep(200);
+			}
+			if (keyboardState->IsKeyDown(Input::Keys::RETURN))
+			{
+				exit(0);
+			}
+		}
+	}
+
 }
 
 void Pacman::UpdateGhost(MovingEnemy* ghost, int elapsedTime)
@@ -523,7 +646,10 @@ void Pacman::Input(int elapsedTime, Input::KeyboardState* state, Input::MouseSta
 		_pacman->currentFrameTime = 0;
 		_pacman->sourceRect->X = _pacman->sourceRect->Width * _pacman->frame;
 	}
-
+		
+		//std::stringstream menuStream; menuStream << "Press Space to Start the Game";
+		
+		//SpriteBatch::DrawString(menuStream.str().c_str(), _menuStringPosition, Color::Red);*/
 }
 void Pacman::Draw(int elapsedTime)
 {
@@ -543,24 +669,32 @@ void Pacman::Draw(int elapsedTime)
 	}
 	SpriteBatch::Draw(_bananaTexture, _bananaPosition, _bananaSourceRect);
 	SpriteBatch::Draw(_appleTexture, _applePosition, _appleSourceRect);
-	//for (int y = 0; y <= 10; ++y)
-	//{
-	//	for (int x = 0; x <= 5; ++x)
-	//	{
-	//		//Tile(x, y);
-	//		_tile = new tile;
-	//		_tile->position = new Vector2((32 * count_tile), (32 * count_tile));
-	//		_tile->sourceRect = new Rect(_tile->position->Y, _tile->position->X, 32, 32);
-	//		/*count_tile += 1;
-	//		switch (Tiles[x][y])
-	//		{
-	//		case 1:*/
-	//			_tile->Texture->Load("Textures/Brick_Block.png", true);
-	//		case 0:
-	//			;
-	//		}
-	//		SpriteBatch::Draw(_tile->Texture,_tile->sourceRect);
-	//	}
+		for (int y = 0; y <= 14; ++y)
+		{
+			for (int x = 0; x <= 12; ++x)
+			{
+				count_tile = y;
+				count_tile1 = x;
+				_tile->position = new Vector2(((Graphics::GetViewportWidth() / 12) * count_tile1), (Graphics::GetViewportHeight() / 14) * count_tile);
+				_tile->sourceRect = new Rect(_tile->position->Y, _tile->position->X, (Graphics::GetViewportWidth() / 12), (Graphics::GetViewportHeight() / 14));
+				if (Tiles[y][x] == 1)
+				{
+					SpriteBatch::Draw(_tile->Texture, _tile->position, _tile->sourceRect);
+				}
+				else if (Tiles[y][x] == 0)
+					SpriteBatch::Draw(_tile->Texture, _tile->position, _tile->sourceRect)
+					;
+					/*for (int i = 0; i < MUNCHIECOUNT; i++)
+					{
+						_munchies[i]->Rect = new Rect(_tile->position->X, _tile->position->X, 12, 12);
+						;
+					}*/
+					
+				
+				/*SpriteBatch::Draw(_tile->Texture, _tile->position, _tile->sourceRect);*/
+			}
+		}
+	
 		if (_bananaFrameCount == 0)
 		{
 			_bananaSourceRect = new Rect(32.0f, 32.0f, 32, 32);
@@ -598,31 +732,38 @@ void Pacman::Draw(int elapsedTime)
 			_appleSourceRect = new Rect(32.0f, 32.0f, 32, 32);
 		}
 
-
 		SpriteBatch::DrawString(stream.str().c_str(), _stringPosition, Color::Green);
 		SpriteBatch::DrawString(Count.str().c_str(), new Vector2(250.0f, 25.0f), Color::Red);
 		if (_paused)
 		{
 			std::stringstream menuStream; menuStream << "PAUSED!";
-			SpriteBatch::Draw(_menuBackground, _menuRectangle, nullptr);
 			SpriteBatch::DrawString(menuStream.str().c_str(), _menuStringPosition, Color::Red);
 		}
+
+
 		if (_start)
 		{
 			SpriteBatch::Draw(_StartBackground, _StartRectangle, nullptr);
-
-			/*std::stringstream menuStream; menuStream << "Press Space to Start the Game";
-			SpriteBatch::Draw(_menuBackground, _menuRectangle, nullptr);
-			SpriteBatch::DrawString(menuStream.str().c_str(), _menuStringPosition, Color::Red);*/
+			if (countButton == 0)
+				SpriteBatch::Draw(_ButtonBackground, _ButtonRectangle, nullptr);
+			else if (countButton == 1)
+				SpriteBatch::Draw(_Button1Background, _Button1Rectangle, nullptr);
+			else if (countButton == 2)
+				SpriteBatch::Draw(_Button2Background, _Button2Rectangle, nullptr);
 		}
 		if (_pacman->dead)
 		{
-			std::stringstream menuStream; menuStream << "You have Died! (Press space)";
-			SpriteBatch::Draw(_menuBackground, _menuRectangle, nullptr);
-			SpriteBatch::DrawString(menuStream.str().c_str(), _menuStringPosition, Color::Red);
+			SpriteBatch::Draw(_EndBackground, _EndRectangle, nullptr);
+			if (countButton == 0)
+				SpriteBatch::Draw(_Button3Background, _Button3Rectangle, nullptr);
+			else if (countButton == 1)
+				SpriteBatch::Draw(_Button4Background, _Button4Rectangle, nullptr);
+			else if (countButton == 2)
+				SpriteBatch::Draw(_Button5Background, _Button5Rectangle, nullptr);
 		}
-		SpriteBatch::EndDraw(); // Ends Drawing
-	}
+		// Ends Drawing
+		SpriteBatch::EndDraw();
+}
 
 //void Pacman::Tile(int x, int y)
 //{
@@ -663,3 +804,14 @@ void Pacman::Draw(int elapsedTime)
 	//}
 
 
+	/*_Button3Background = new Texture2D();
+	_Button3Background->Load("Textures/PlayAgain.png", false);;
+	_Button3Rectangle = new Rect(0.0f, 0.0f, Graphics::GetViewportWidth(), Graphics::GetViewportHeight());
+
+	_Button4Background = new Texture2D();
+	_Button4Background->Load("Textures/MainMenu.png", false);;
+	_Button4Rectangle = new Rect(0.0f, 0.0f, Graphics::GetViewportWidth(), Graphics::GetViewportHeight());*/
+
+	//_Button5Background = new Texture2D();
+	//_Button5Background->Load("Textures/Exit.png", false);;
+	//_Button5Rectangle = new Rect(0.0f, 0.0f, Graphics::GetViewportWidth(), Graphics::GetViewportHeight());

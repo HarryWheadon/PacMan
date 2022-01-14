@@ -96,14 +96,18 @@
     <Image Include="Textures\Background.png" />
     <Image Include="Textures\Banana.tga" />
     <Image Include="Textures\Brick_Block.png" />
+    <Image Include="Textures\Exit.png" />
+    <Image Include="Textures\GameOverBackground.png" />
     <Image Include="Textures\GhostBlue.png" />
     <Image Include="Textures\Munchie.tga" />
     <Image Include="Textures\MunchieCombined.tga" />
     <Image Include="Textures\MunchieInverted.tga" />
-    <Image Include="Textures\PacmanBackground.jpg" />
+    <Image Include="Textures\Options.png" />
     <Image Include="Textures\Pacman.png" />
     <Image Include="Textures\Pacman.tga" />
     <Image Include="Textures\PacmanBackground.png" />
+    <Image Include="Textures\PlayAgain.png" />
+    <Image Include="Textures\PlayGame.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

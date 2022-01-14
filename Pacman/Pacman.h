@@ -88,12 +88,24 @@ private:
 	void UpdateGhost(MovingEnemy*, int elapsedTime);
 	void GhostFollow(MovingEnemy*, int elapsedTime);
 
-	Texture2D* _menuBackground;
-	Rect* _menuRectangle;
+	Texture2D* _ButtonBackground;
+	Rect* _ButtonRectangle;
+	Texture2D* _Button1Background;
+	Rect* _Button1Rectangle;
+	Texture2D* _Button2Background;
+	Rect* _Button2Rectangle;
+	Texture2D* _Button3Background;
+	Rect* _Button3Rectangle;
+	Texture2D* _Button4Background;
+	Rect* _Button4Rectangle;
+	Texture2D* _Button5Background;
+	Rect* _Button5Rectangle;
 	Texture2D* _Background;
 	Rect* _Rectangle;
 	Texture2D* _StartBackground;
 	Rect* _StartRectangle;
+	Texture2D* _EndBackground;
+	Rect* _EndRectangle;
 	Vector2* _menuStringPosition;
 	Player* _pacman;
 	tile* _tile;
@@ -108,10 +120,12 @@ private:
 	const int _cMunchieFrameTime;
 	int _munchieFrame;
 	int _munchieCurrentFrameTime;
+	int count_tile;
+	int count_tile1;
 	int count;
 	int ghostDirec;
-	int count_tile;
-	int Tiles[10][5];
+	int countButton;
+	int Tiles[25][20];
 
 	SoundEffect* _pop;
 	SoundEffect* _Intro;

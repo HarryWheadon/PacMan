@@ -64,10 +64,22 @@
     <Image Include="Textures\Brick_Block.png">
       <Filter>Graphics</Filter>
     </Image>
-    <Image Include="Textures\PacmanBackground.jpg">
+    <Image Include="Textures\PacmanBackground.png">
       <Filter>Graphics</Filter>
     </Image>
-    <Image Include="Textures\PacmanBackground.png">
+    <Image Include="Textures\GameOverBackground.png">
+      <Filter>Graphics</Filter>
+    </Image>
+    <Image Include="Textures\PlayGame.png">
+      <Filter>Graphics</Filter>
+    </Image>
+    <Image Include="Textures\Options.png">
+      <Filter>Graphics</Filter>
+    </Image>
+    <Image Include="Textures\Exit.png">
+      <Filter>Graphics</Filter>
+    </Image>
+    <Image Include="Textures\PlayAgain.png">
       <Filter>Graphics</Filter>
     </Image>
   </ItemGroup>
