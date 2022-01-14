@@ -94,6 +94,8 @@ void Pacman::LoadContent()
 			(160));
 		_ghosts[2]->position = new Vector2((305),
 			(550));
+		_ghosts[3]->position = new Vector2((100),
+			(610));
 		_ghosts[i]->sourceRect = new Rect(0.0f, 0.0f, 20, 20);
 	}
 	// Load Munchie
@@ -619,6 +621,10 @@ void Pacman::CheckGhostCollisions()
 				_ghosts[1]->position = new Vector2((110),
 					(160));
 				_ghosts[2]->position = new Vector2((305),
+					(550));
+				_ghosts[3]->position = new Vector2((305),
+					(550));
+				_ghosts[3]->position = new Vector2((305),
 					(550));
 				_ghosts[i]->sourceRect = new Rect(0.0f, 0.0f, 20, 20);
 			}
