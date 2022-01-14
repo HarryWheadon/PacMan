@@ -46,23 +46,7 @@ Pacman::Pacman(int argc, char* argv[]) : Game(argc, argv), _cPacmanSpeed(0.1f), 
 
 	// Start the Game Loop - This calls Update and Draw in game loop
 	Graphics::StartGameLoop();
-
-	int Tiles[14][12] = {
-		{1, 1, 1,1,1,1, 1, 1,1,1,1, 1},
-		{1, 1, 1,1,1,1, 1, 1,1,1,1, 1},
-		{1, 1, 1,1,1,1, 1, 1,1,1,1, 1},
-		{1, 1, 1,1,1,1, 1, 1,1,1,1, 1},
-		{1, 1, 1,1,1,1, 1, 1,1,1,1, 1},
-		{1, 1, 1,1,1,1, 1, 1,1,1,1, 1},
-		{1, 1, 1,1,1,1, 1, 1,1,1,1, 1},
-		{1, 1, 1,1,1,1, 1, 1,1,1,1, 1},
-		{1, 1, 1,1,1,1, 1, 1,1,1,1, 1},
-		{1, 1, 1,1,1,1, 1, 1,1,1,1, 1},
-		{1, 1, 1,1,1,1, 1, 1,1,1,1, 1},
-		{1, 1, 1,1,1,1, 1, 1,1,1,1, 1},
-		{1, 1, 1,1,1,1, 1, 1,1,1,1, 1},
-		{1, 1, 1,1,1,1, 1, 1,1,1,1, 1},
-	};
+	
 }
 
 Pacman::~Pacman()
@@ -660,7 +644,6 @@ void Pacman::Draw(int elapsedTime)
 	Count << "POINTS: " << count;
 
 	SpriteBatch::BeginDraw(); // Starts Drawing
-	SpriteBatch::Draw(_Background, _Rectangle, nullptr);
 	for (int i = 0; i < GHOSTCOUNT; i++)
 		SpriteBatch::Draw(_ghosts[i]->texture, _ghosts[i]->position, _ghosts[i]->sourceRect);
 	if (!_pacman->dead)
@@ -682,18 +665,15 @@ void Pacman::Draw(int elapsedTime)
 					SpriteBatch::Draw(_tile->Texture, _tile->position, _tile->sourceRect);
 				}
 				else if (Tiles[y][x] == 0)
-					SpriteBatch::Draw(_tile->Texture, _tile->position, _tile->sourceRect)
+					/*SpriteBatch::Draw(_tile->Texture, _tile->position, _tile->sourceRect)*/
 					;
-					/*for (int i = 0; i < MUNCHIECOUNT; i++)
-					{
-						_munchies[i]->Rect = new Rect(_tile->position->X, _tile->position->X, 12, 12);
-						;
-					}*/
+					
 					
 				
 				/*SpriteBatch::Draw(_tile->Texture, _tile->position, _tile->sourceRect);*/
 			}
 		}
+		SpriteBatch::Draw(_Background, _Rectangle, nullptr);
 	
 		if (_bananaFrameCount == 0)
 		{
