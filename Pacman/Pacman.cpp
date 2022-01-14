@@ -77,7 +77,7 @@ void Pacman::LoadContent()
 	// Load Pacman
 	_pacman->texture = new Texture2D();
 	_pacman->texture->Load("Textures/Pacman.png", false);
-	_pacman->position = new Vector2(300.0f, 250.0f);
+	_pacman->position = new Vector2(250.0f, 100.0f);
 	_pacman->sourceRect = new Rect(0.0f, 0.0f, 48, 48);
 
 	// Load Ghost
@@ -94,8 +94,8 @@ void Pacman::LoadContent()
 	{
 		_munchies[i]->Munchie = new Texture2D();
 		_munchies[i]->MunchieInverted = new Texture2D();
-		_munchies[i]->MunchieInverted->Load("Textures/MunchieInverted.tga", false);
-		_munchies[i]->Munchie->Load("Textures/Munchie.tga", false);
+		_munchies[i]->MunchieInverted->Load("Textures/MunchieInverted.png", false);
+		_munchies[i]->Munchie->Load("Textures/Munchie.png", false);
 		_munchies[i]->MunchieTex = new Texture2D();
 		_munchies[i]->MunchieTex->Load("Textures/MunchieCombined.tga", false);
 		_munchies[i]->position = new Vector2((rand() % Graphics::GetViewportWidth()), (rand() % Graphics::GetViewportHeight()));
@@ -415,6 +415,58 @@ void Pacman::UpdatePacman(int elapsedTime)
 	else if (_pacman->position->Y + _pacman->sourceRect->Height < 30)
 	{
 		_pacman->position->Y = Graphics::GetViewportHeight() - _pacman->sourceRect->Height;
+	}
+	for (int y = 0; y <= 14; ++y)
+	{
+		for (int x = 0; x <= 12; ++x)
+		{
+			count_tile = y;
+			count_tile1 = x;
+			_tile->position = new Vector2(((Graphics::GetViewportWidth() / 12) * count_tile1), (Graphics::GetViewportHeight() / 14) * count_tile);
+			_tile->sourceRect = new Rect(_tile->position->Y, _tile->position->X, (Graphics::GetViewportWidth() / 12), (Graphics::GetViewportHeight() / 14));
+			if (Tiles[y][x] == 1)
+			{
+				if (_pacman->position->X < (_tile->position->X - 25) )
+				{
+					_pacman->position->X = +_pacman->sourceRect->Width;
+				}
+				if (_pacman->position->X  > (_tile->position->X + 25))
+				{
+					_pacman->position->X = - _pacman->sourceRect->Width;
+				}
+
+				if (_pacman->position->Y < (_tile->position->Y - 25))
+				{
+					_pacman->position->Y = +_pacman->sourceRect->Height;
+				}
+				if (_pacman->position->Y > (_tile->position->Y + 25))
+				{
+					_pacman->position->Y = -_pacman->sourceRect->Height;
+				}
+
+				/*if (_pacman->position->X  > _tile->position->X)
+				{
+				}
+				else if (_pacman->position->X  < _tile->position->X - _tile->sourceRect->Width)
+				{
+					_pacman->position->X = - _pacman->sourceRect->Width;
+				}
+
+				if (_pacman->position->Y < _tile->position->Y + _tile->sourceRect->Height)
+				{
+				}
+				else if (_pacman->position->Y > _tile->position->Y + _tile->sourceRect->Height)
+				{
+					_pacman->position->Y = + _pacman->sourceRect->Height;
+				}*/
+				/*	_pacman->position->X = _pacman->position->X  - (_tile->position->X - _tile->sourceRect->Width);
+						_pacman->position->Y = _pacman->position->Y - (_tile->position->Y - _tile->sourceRect->Height);*/
+				/*CheckViewportCollision(_pacman->position->X, _pacman->position->Y, _pacman->sourceRect->Width, _pacman->sourceRect->Height, _tile->position->X, _tile->position->Y, _tile->sourceRect->Width, _tile->sourceRect->Height)*/
+			}
+			else if (Tiles[y][x] == 0)
+				;
+
+		}
 	}
 }
 

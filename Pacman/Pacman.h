@@ -29,10 +29,6 @@ struct tile
 {
 	Vector2* position;
 	Texture2D* Texture;
-	TileCollision Collision;
-    static const int Width = 32;
-    static const int Height = 32;
-	const Vector2* tile::Size = new Vector2(Width,Height);
 	Rect* sourceRect;
 };
 struct MovingEnemy
