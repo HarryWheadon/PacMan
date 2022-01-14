@@ -9,7 +9,7 @@ Pacman::Pacman(int argc, char* argv[]) : Game(argc, argv), _cPacmanSpeed(0.08f),
 	{
 		_ghosts[i] = new MovingEnemy();
 		_ghosts[i]->direction = 0;
-		_ghosts[i]->speed = 0.05f;
+		_ghosts[i]->speed = 0.04f;
 	}
 	for (int i = 0; i < MUNCHIECOUNT; i++)
 	{ 
@@ -86,14 +86,20 @@ void Pacman::LoadContent()
 	// Load Ghost
 	for (int i = 0; i < GHOSTCOUNT; i++)
 	{
-		_ghosts[i]->texture = new Texture2D();
-		_ghosts[i]->texture->Load("Textures/GhostBlue.png", false);
+		_ghosts[0]->texture = new Texture2D();
+		_ghosts[0]->texture->Load("Textures/GhostBlue.png", false);
 		_ghosts[0]->position = new Vector2((300),
 			(300));
+		_ghosts[1]->texture = new Texture2D();
+		_ghosts[1]->texture->Load("Textures/GhostYellow.png", false);
 		_ghosts[1]->position = new Vector2((110),
 			(160));
+		_ghosts[2]->texture = new Texture2D();
+		_ghosts[2]->texture->Load("Textures/GhostPurple.png", false);
 		_ghosts[2]->position = new Vector2((305),
 			(550));
+		_ghosts[3]->texture = new Texture2D();
+		_ghosts[3]->texture->Load("Textures/GhostGreen.png", false);
 		_ghosts[3]->position = new Vector2((100),
 			(610));
 		_ghosts[i]->sourceRect = new Rect(0.0f, 0.0f, 20, 20);
@@ -606,6 +612,7 @@ void Pacman::CheckGhostCollisions()
 		if ((bottom1 > top2) && (top1 < bottom2) && (right1 > left2) && (left1 < right2))
 		{
 			Audio::Play(_Dead);
+			_pacman->sourceRect = new Rect(64.0f, 0.0f, 32, 32);
 			_pacman->dead = true;
 			if (count > Highscore[1])
 			{
@@ -614,18 +621,22 @@ void Pacman::CheckGhostCollisions()
 			_pacman->position = new Vector2(250.0f, 107.0f);
 			for (int i = 0; i < GHOSTCOUNT; i++)
 			{
-				_ghosts[i]->texture = new Texture2D();
-				_ghosts[i]->texture->Load("Textures/GhostBlue.png", false);
+				_ghosts[0]->texture = new Texture2D();
+				_ghosts[0]->texture->Load("Textures/GhostBlue.png", false);
 				_ghosts[0]->position = new Vector2((300),
 					(300));
+				_ghosts[1]->texture = new Texture2D();
+				_ghosts[1]->texture->Load("Textures/GhostYellow.png", false);
 				_ghosts[1]->position = new Vector2((110),
 					(160));
+				_ghosts[2]->texture = new Texture2D();
+				_ghosts[2]->texture->Load("Textures/GhostPurple.png", false);
 				_ghosts[2]->position = new Vector2((305),
 					(550));
-				_ghosts[3]->position = new Vector2((305),
-					(550));
-				_ghosts[3]->position = new Vector2((305),
-					(550));
+				_ghosts[3]->texture = new Texture2D();
+				_ghosts[3]->texture->Load("Textures/GhostGreen.png", false);
+				_ghosts[3]->position = new Vector2((100),
+					(610));
 				_ghosts[i]->sourceRect = new Rect(0.0f, 0.0f, 20, 20);
 			}
 			i = GHOSTCOUNT;
@@ -867,54 +878,3 @@ void Pacman::Draw(int elapsedTime)
 		// Ends Drawing
 		SpriteBatch::EndDraw();
 }
-
-//void Pacman::Tile(int x, int y)
-//{
-//			_tile = new tile;
-//			_tile->position = new Vector2((32 * count_tile), (32 * count_tile));
-//			_tile->sourceRect = new Rect(_tile->position->Y, _tile->position->X, 32, 32);
-//			LoadTile(Tiles[y][x], _tile->position->X, _tile->position->Y);
-//			count_tile += 1;
-//}
-//	void Pacman::LoadTile(const char tileType, int x, int y)
-//	{
-//		switch (tileType)
-//		{
-//		case 1:
-//			_tile->Texture->Load("Textures/Brick_Block",true);
-//		case 0:
-//			;
-//		}
-//
-//	}
-	//void Pacman::DrawTiles()
-	//{
-	//	for (int y = 0; y < tile::Height; ++y)
-	//	{
-	//		for (int x = 0; x < tile::Width; ++x)
-	//		{
-	//			// If there is a visible tile in that position
-	//			Texture2D* texture = _tile->at(x).at(y)->Texture;
-	//			if (texture != nullptr)
-	//			{
-	//				// Draw it in screen space.
-	//				Vector2 position(x, y);
-	//				position *= *tile::Size;
-	//				SpriteBatch::Draw(texture, &position);
-	//			}
-	//		}
-	//	}
-	//}
-
-
-	/*_Button3Background = new Texture2D();
-	_Button3Background->Load("Textures/PlayAgain.png", false);;
-	_Button3Rectangle = new Rect(0.0f, 0.0f, Graphics::GetViewportWidth(), Graphics::GetViewportHeight());
-
-	_Button4Background = new Texture2D();
-	_Button4Background->Load("Textures/MainMenu.png", false);;
-	_Button4Rectangle = new Rect(0.0f, 0.0f, Graphics::GetViewportWidth(), Graphics::GetViewportHeight());*/
-
-	//_Button5Background = new Texture2D();
-	//_Button5Background->Load("Textures/Exit.png", false);;
-	//_Button5Rectangle = new Rect(0.0f, 0.0f, Graphics::GetViewportWidth(), Graphics::GetViewportHeight());
