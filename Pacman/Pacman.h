@@ -8,7 +8,7 @@
 	#endif
 #endif
 #define MUNCHIECOUNT 50
-#define GHOSTCOUNT 1
+#define GHOSTCOUNT 3
 // Just need to include main header file
 #include "S2D/S2D.h"
 
@@ -121,6 +121,7 @@ private:
 	int count;
 	int ghostDirec;
 	int countButton;
+	int Highscore[1];
 	int Tiles[14][12] =
 	{
 		{1,1,1,1,1,1,1,1,1,1,1,1},
@@ -142,6 +143,7 @@ private:
 	SoundEffect* _pop;
 	SoundEffect* _Intro;
 	SoundEffect* _Dead;
+	SoundEffect* _Warp;
 	int _bananaFrameCount;
 	const int _cBananaFrameTime;
 	int _bananaframe;
