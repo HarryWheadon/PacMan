@@ -7,8 +7,8 @@
 		#pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
 	#endif
 #endif
-#define MUNCHIECOUNT 50
-#define GHOSTCOUNT 4
+#define MUNCHIECOUNT 90
+#define GHOSTCOUNT 10
 // Just need to include main header file
 #include "S2D/S2D.h"
 
@@ -19,12 +19,6 @@ using namespace S2D;
 // This allows us to overload the Game class methods to help us
 // load content, draw and update our game.
 	//Structure definition
-enum class TileCollision
-{
-	passable = 0,
-    impassable = 1,
-    platform = 2
-};
 struct tile
 {
 	Vector2* position;
@@ -121,16 +115,18 @@ private:
 	int count;
 	int ghostDirec;
 	int countButton;
+	int countPos;
 	int Highscore[1];
+	int RndNum;
 	int Tiles[14][12] =
 	{
 		{1,1,1,1,1,1,1,1,1,1,1,1},
 		{1,0,0,0,0,1,1,0,0,0,0,1},
 		{1,0,1,1,0,0,0,0,1,1,0,1},
-		{1,0,0,0,0,1,1,0,0,0,0,1},
-		{1,0,1,0,1,1,1,1,0,1,0,1},
-		{1,0,0,0,0,0,0,0,0,0,0,1},
-		{1,1,1,0,1,0,0,1,0,1,1,1},
+		{1,0,0,0,0,1,0,1,0,0,0,1},
+		{1,0,1,0,1,1,0,0,0,1,0,1},
+		{1,0,0,0,0,0,1,1,0,0,0,1},
+		{1,1,1,0,1,0,0,0,0,1,1,1},
 		{0,0,0,0,1,1,1,1,0,0,0,0},
 		{1,1,1,0,0,0,0,0,0,1,1,1},
 		{1,0,0,0,1,0,1,1,0,0,0,1},

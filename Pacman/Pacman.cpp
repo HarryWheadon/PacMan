@@ -19,9 +19,11 @@ Pacman::Pacman(int argc, char* argv[]) : Game(argc, argv), _cPacmanSpeed(0.08f),
 	_munchies[i]->frameTime = rand() % 500 + 500;
 	}
 	_tile = new tile;
+	RndNum = 0;
 	ghostDirec = 0;
 	count = 0;
 	countButton = 0;
+	countPos = 0;
 	Highscore[1];
 	_pacman = new Player();
 	_pacman->dead = false;
@@ -102,6 +104,30 @@ void Pacman::LoadContent()
 		_ghosts[3]->texture->Load("Textures/GhostGreen.png", false);
 		_ghosts[3]->position = new Vector2((100),
 			(610));
+		_ghosts[4]->texture = new Texture2D();
+		_ghosts[4]->texture->Load("Textures/GhostDarkBlue.png", false);
+		_ghosts[4]->position = new Vector2((100),
+			(610));
+		_ghosts[5]->texture = new Texture2D();
+		_ghosts[5]->texture->Load("Textures/GhostOrange.png", false);
+		_ghosts[5]->position = new Vector2((100),
+			(610));
+		_ghosts[6]->texture = new Texture2D();
+		_ghosts[6]->texture->Load("Textures/GhostDarkGreen.png", false);
+		_ghosts[6]->position = new Vector2((100),
+			(610));
+		_ghosts[7]->texture = new Texture2D();
+		_ghosts[7]->texture->Load("Textures/GhostPink.png", false);
+		_ghosts[7]->position = new Vector2((100),
+			(610));
+		_ghosts[8]->texture = new Texture2D();
+		_ghosts[8]->texture->Load("Textures/GhostDarkPink.png", false);
+		_ghosts[8]->position = new Vector2((100),
+			(610));
+		_ghosts[9]->texture = new Texture2D();
+		_ghosts[9]->texture->Load("Textures/GhostRed.png", false);
+		_ghosts[9]->position = new Vector2((100),
+			(610));
 		_ghosts[i]->sourceRect = new Rect(0.0f, 0.0f, 20, 20);
 	}
 	// Load Munchie
@@ -113,8 +139,6 @@ void Pacman::LoadContent()
 		_munchies[i]->Munchie->Load("Textures/Munchie.png", false);
 		_munchies[i]->MunchieTex = new Texture2D();
 		_munchies[i]->MunchieTex->Load("Textures/MunchieCombined.tga", false);
-		_munchies[i]->position = new Vector2((rand() % (Graphics::GetViewportWidth() - 50)), (rand() % (Graphics::GetViewportHeight() - 50)));
-		_munchies[i]->Rect = new Rect(_munchies[i]->position->X,_munchies[i]->position->Y, 12, 12);
 	}
 	
 	// Load Banana
@@ -171,6 +195,21 @@ void Pacman::LoadContent()
 	_Background = new Texture2D();
 	_Background->Load("Textures/Background.png", false);
 	_Rectangle = new Rect(0.0f, 0.0f, Graphics::GetViewportWidth(), Graphics::GetViewportHeight());
+
+	for (int y = 0; y <= 14; ++y)
+	{
+		for (int x = 0; x <= 12; ++x)
+		{
+			count_tile = y;
+			count_tile1 = x;
+			if (Tiles[y][x] == 0)
+			{
+				_munchies[countPos]->position = new Vector2(((Graphics::GetViewportWidth() / 12) * (count_tile1 + 0.5)), (Graphics::GetViewportHeight() / 14) * (count_tile + 0.5));
+				_munchies[countPos]->Rect = new Rect(_munchies[countPos]->position->X, _munchies[countPos]->position->Y, 12, 12);
+				countPos += 1;
+			}
+		}
+	}
 }
 
 
@@ -452,69 +491,38 @@ void Pacman::UpdatePacman(int elapsedTime)
 					if (CheckViewportCollision(_ghosts[i]->position->X, _ghosts[i]->position->Y, _ghosts[i]->sourceRect->Width, _ghosts[i]->sourceRect->Height, _tile->position->X, _tile->position->Y, _tile->sourceRect->Width, _tile->sourceRect->Height))
 					{
 						if (_ghosts[i]->direction == 0) {
-							_ghosts[i]->direction = 3;
-							_ghosts[i]->position->X = _ghosts[i]->position->X - 4;
+							RndNum = (rand() % 4);
+							_ghosts[i]->direction = RndNum;
+							_ghosts[i]->position->X -= 4;
 						}
-				
 						else if (_ghosts[i]->direction == 3){
-							_ghosts[i]->direction = 2;
-							_ghosts[i]->position->Y = _ghosts[i]->position->Y - 4;
+							RndNum = (rand() % 4);
+							_ghosts[i]->direction = RndNum;
+							_ghosts[i]->position->Y += 4;
 				        }
-						else if (_ghosts[i]->direction == 1)
-						{ 
-							_ghosts[i]->direction = 0;
-							_ghosts[i]->position->X = _ghosts[i]->position->X + 4;
+						else if (_ghosts[i]->direction == 1){ 
+							RndNum = (rand() % 4);
+							_ghosts[i]->direction = RndNum;
+							_ghosts[i]->position->X += 4;
 						}
 						else if (_ghosts[i]->direction == 2){
-							_ghosts[i]->direction = 1;
-							_ghosts[i]->position->Y = _ghosts[i]->position->Y + 4;
+							RndNum = (rand() % 4);
+							_ghosts[i]->direction = RndNum;
+							_ghosts[i]->position->Y -= 4;
 						}
 					}
 				}
 				if (CheckViewportCollision(_pacman->position->X, _pacman->position->Y, _pacman->sourceRect->Width, _pacman->sourceRect->Height, _tile->position->X, _tile->position->Y, _tile->sourceRect->Width, _tile->sourceRect->Height))
 				{
 					if (_pacman->direction == 0) 
-						_pacman->position->X = _pacman->position->X - 3;
+						_pacman->position->X = _pacman->position->X - 2.3;
 					else if(_pacman->direction == 1)
-						_pacman->position->Y = _pacman->position->Y - 3;
+						_pacman->position->Y = _pacman->position->Y - 2.3;
 					else if (_pacman->direction == 2)
-						_pacman->position->X = _pacman->position->X + 3;
+						_pacman->position->X = _pacman->position->X + 2.3;
 					else if (_pacman->direction == 3)
-						_pacman->position->Y = _pacman->position->Y + 3;
+						_pacman->position->Y = _pacman->position->Y + 2.3;
 					}
-				/*if (_pacman->position->X < (_tile->position->X - _tile->sourceRect->Width) )
-				{
-					_pacman->position->X += _pacman->sourceRect->Width + 1;
-				}
-				if (_pacman->position->X  > (_tile->position->X + _tile->sourceRect->Width))
-				{
-					_pacman->position->X -= _pacman->sourceRect->Width - 1;
-				}
-
-				if (_pacman->position->Y < (_tile->position->Y - _tile->sourceRect->Height))
-				{
-					_pacman->position->Y += _pacman->sourceRect->Height + 1;
-				}
-				if (_pacman->position->Y > (_tile->position->Y + _tile->sourceRect->Height))
-				{
-					_pacman->position->Y -= _pacman->sourceRect->Height - 1;
-				}*/
-
-				/*if (_pacman->position->X  > _tile->position->X)
-				{
-				}
-				else if (_pacman->position->X  < _tile->position->X - _tile->sourceRect->Width)
-				{
-					_pacman->position->X = - _pacman->sourceRect->Width;
-				}
-
-				if (_pacman->position->Y < _tile->position->Y + _tile->sourceRect->Height)
-				{
-				}
-				else if (_pacman->position->Y > _tile->position->Y + _tile->sourceRect->Height)
-				{
-					_pacman->position->Y = + _pacman->sourceRect->Height;
-				}*/
 			}
 			else if (Tiles[y][x] == 0)
 				;
@@ -797,17 +805,10 @@ void Pacman::Draw(int elapsedTime)
 				{
 					SpriteBatch::Draw(_tile->Texture, _tile->position, _tile->sourceRect);
 				}
-				else if (Tiles[y][x] == 0)
-					/*SpriteBatch::Draw(_tile->Texture, _tile->position, _tile->sourceRect)*/
-					;
-					
-					
-				
-				/*SpriteBatch::Draw(_tile->Texture, _tile->position, _tile->sourceRect);*/
 			}
-		}
+	    }
 		SpriteBatch::Draw(_Background, _Rectangle, nullptr);
-	
+
 		if (_bananaFrameCount == 0)
 		{
 			_bananaSourceRect = new Rect(32.0f, 32.0f, 32, 32);
@@ -853,7 +854,6 @@ void Pacman::Draw(int elapsedTime)
 			SpriteBatch::DrawString(menuStream.str().c_str(), _menuStringPosition, Color::Red);
 		}
 
-
 		if (_start)
 		{
 			SpriteBatch::Draw(_StartBackground, _StartRectangle, nullptr);
@@ -875,6 +875,5 @@ void Pacman::Draw(int elapsedTime)
 			else if (countButton == 2)
 				SpriteBatch::Draw(_Button5Background, _Button5Rectangle, nullptr);
 		}
-		// Ends Drawing
 		SpriteBatch::EndDraw();
 }
